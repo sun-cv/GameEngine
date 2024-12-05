@@ -1,0 +1,14 @@
+{
+  "meshName": "triangle",
+  "shaderName": "color",
+  "textureName": "metal_rust_normal",
+  "uniforms": {
+    "color": [1.0, 1.0, 1.0],
+    "opacity": 1
+  },
+  "transform": {
+    "position": [0.0, 0.0, 0.0],
+    "rotation": [0.0, 0.0, 0.0],
+    "scale": [0, 0, 0]
+  }
+}

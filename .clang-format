@@ -1,0 +1,12 @@
+BasedOnStyle: Google
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+ColumnLimit: 120
+
+IncludeBlocks: Preserve
+IncludeCategories:
+  - Regex: "^<glad/glad.h>"
+    Priority: 1
+  - Regex: "^<GLFW/glfw3.h>"
+    Priority: 2

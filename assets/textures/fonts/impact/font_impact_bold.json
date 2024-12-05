@@ -1,0 +1,14 @@
+{
+    "name": "impactBold",
+    "fontName": "Impact Bold",
+    "fontTexture": "font_impact_bold",
+    "fontShader": "text",
+    "fontWidth": 512,
+    "fontHeight": 512,
+    "atlasRows": 16,
+    "atlasColumns": 16,
+    "glyphs": {
+
+    }
+
+}

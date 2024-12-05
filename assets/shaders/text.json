@@ -1,0 +1,8 @@
+{
+    "name": "text",
+    "vertexPath": "D:/Projects/GameEngine/renderer/shaders/vertex/vertex_text.glsl",
+    "fragmentPath": "D:/Projects/GameEngine/renderer/shaders/fragment/fragment_text.glsl"
+  }
+  
+  
+  

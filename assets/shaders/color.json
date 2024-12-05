@@ -1,0 +1,8 @@
+{
+    "name": "color",
+    "vertexPath": "D:/Projects/GameEngine/renderer/shaders/vertex/vertex_color.glsl",
+    "fragmentPath": "D:/Projects/GameEngine/renderer/shaders/fragment/fragment_color.glsl"
+  }
+  
+  
+  

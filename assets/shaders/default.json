@@ -1,0 +1,7 @@
+{
+  "name": "default",
+  "vertexPath": "D:/Projects/GameEngine/renderer/shaders/vertex/vertex_default.glsl",
+  "fragmentPath": "D:/Projects/GameEngine/renderer/shaders/fragment/fragment_default.glsl"
+}
+
+
