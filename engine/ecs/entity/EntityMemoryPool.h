@@ -45,7 +45,7 @@ class EntityMemoryPool
         {
             std::vector test = std::get<std::vector<component>>(tuple);
             test[entityID] = component();
-            Log_(Log::Debug, Log::EMP, "Reset component existence {} of {}", test[entityID].exists, typeid(component).name());
+            Log_(Log::Trace, Log::EMP, "Reset component existence {} of {}", test[entityID].exists, typeid(component).name());
         }
         
         void initializeEntity(ECS::Type entityID, const std::string& tag);

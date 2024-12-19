@@ -64,11 +64,10 @@ while (windowController->active())
 
 void Engine::debug()
 {
-    Entity entity = entityManager->addEntity("test");
 }
 
 void Engine::mark()
-{
+{ 
     Entity entity = entityManager->addEntity("test");
 }
 

@@ -8,8 +8,8 @@
 
 namespace Log {
 enum LogLevel {
-    Debug,
     Trace,
+    Debug,
     System,
     Warning,
     Error,
@@ -18,8 +18,8 @@ enum LogLevel {
 
 static const char* levelStrings[] = 
 {
-    "  [Debug]",
     "  [Trace]",
+    "  [Debug]",
     " [System]",
     "[Warning]",
     "  [Error]",

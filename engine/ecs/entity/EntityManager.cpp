@@ -17,8 +17,7 @@ Entity EntityManager::addEntity(const std::string& tag)
 
     if (!entity.isValid())
     {
-        Log_(Log::Error, Log::EntityManager, "INVALID_ENTITY detected" )
-        destroyQueue.push_back(entity);
+        Log_(Log::Warning, Log::EntityManager, "INVALID_ENTITY detected" )
         return entity;
     }
     createQueue.push_back(entity);
@@ -30,6 +29,7 @@ void EntityManager::update()
 
     createEntities();
     destroyEntities();
+    
 
 }
 
@@ -40,11 +40,13 @@ void EntityManager::createEntities()
         return;
     }
 
+    int created = 0;
     for (auto entity : createQueue)
     {
         entities.push_back(entity);
+        created++;
     }
-    Log_(Log::Debug, Log::EntityManager, "Cleared create Queue");
+    Log_(Log::Debug, Log::EntityManager, "Created {} Entities", created);
     createQueue.clear();
 }
 
@@ -61,10 +63,9 @@ void EntityManager::destroyEntities()
         auto iterator = std::find(destroyQueue.begin(), destroyQueue.end(), entity);
         if (iterator == destroyQueue.end())
         {
-            Log_(Log::Error, Log::EntityManager, "Entity ID {} not found for destruction", entity.getID());
+            Log_(Log::Warning, Log::EntityManager, "Entity ID {} not found for destruction", entity.getID());
             return;
         }
-
         entities.erase(iterator);
     }
     Log_(Log::Debug, Log::EntityManager, "Cleared destroy Queue");
