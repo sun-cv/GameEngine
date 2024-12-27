@@ -1,86 +1,90 @@
 #ifndef ENTITY_MEMORY_POOL_H
 #define ENTITY_MEMORY_POOL_H
 
-#include "EngineCore.h"
-#include "ECScore.h"
-#include "EngineVariables.h"
+#include "CoreEngine.h"
+#include "CoreECS.h"
 
-class Entity;
-
+namespace ECS 
+{
 class EntityMemoryPool
 {
     private:
         EntityMemoryPool();
 
-        ECS::EntityComponentVectorTuple         pool;
+        ECS::VectorTuple                        pool;
         
-        ECS::Type                               totalEntities;
+        ECS::size                               totalEntities;
         std::vector<std::string>                tags;    
         std::vector<bool>                       active;
+
+        void initializeEntity       (size entityID, const std::string& tag);
+        
+    public: 
+        EntityMemoryPool            (const EntityMemoryPool &) = delete;
+        EntityMemoryPool &operator= (const EntityMemoryPool &) = delete;
+
+        size getNextEntityIndex     ();
+        size allocateEntity         (const std::string& tag);
+        void deallocateEntity       (size entityID);
+        
+        static EntityMemoryPool&    getInstance()
+        {
+            static EntityMemoryPool instance;
+            return instance;
+        }
+
+    private:
 
         template<typename component>
         void initializeVector(std::vector<component>& vector)
         {
             vector.resize(MAX_ENTITIES);
-            Log_(Log::Debug, Log::EMP, "Instantiated entity limit {} vector of {}", vector.size(), typeid(component).name());
+            Log_(Log::Trace, Log::EMP, "Instantiated entity limit {} vector of {}", vector.size(), typeid(component).name());
         }
 
-        template<ECS::Type index = 0, ECS::Type count>
+        template<size index = 0, size count>
         typename std::enable_if<index == count, void>::type
-        initializeComponents(ECS::EntityComponentVectorTuple&)
+        initializeComponents(VectorTuple&)
         {
 
         }
 
-        template<ECS::Type index = 0, ECS::Type count>
-        typename std::enable_if<index < count, void>::type
-        initializeComponents(ECS::EntityComponentVectorTuple& tuple)
+        template<size index = 0, size count>
+        typename std::enable_if<index <  count, void>::type
+        initializeComponents(VectorTuple& tuple)
         {
             initializeVector(std::get<index>(tuple));
             initializeComponents<index + 1, count>(tuple);
         }
 
         template <typename component>
-        void resetComponent(ECS::EntityComponentVectorTuple& tuple, ECS::Type entityID)
+        void resetComponent(VectorTuple& tuple, size entityID)
         {
-            std::vector test = std::get<std::vector<component>>(tuple);
-            test[entityID] = component();
-            Log_(Log::Trace, Log::EMP, "Reset component existence {} of {}", test[entityID].exists, typeid(component).name());
-        }
-        
-        void initializeEntity(ECS::Type entityID, const std::string& tag);
-
-    public: 
-        EntityMemoryPool(const EntityMemoryPool &)              = delete;
-        EntityMemoryPool &operator=(const EntityMemoryPool &)   = delete;
-
-        static EntityMemoryPool& getInstance()
-        {
-            static EntityMemoryPool instance;
-            return instance;
+            auto& components = std::get<std::vector<component>>(tuple);
+            components[entityID] = component();
+            Log_(Log::Trace, Log::EMP, "Reset component existence {} of {}", components[entityID].exists, typeid(component).name());
         }
 
+    public:
 
         template <typename component>
-        component& getComponent(ECS::Type entityID)
+        component& getComponent(size entityID)
         {
             return std::get<std::vector<component>>(pool)[entityID];
         }
 
-        const std::string& getTag(ECS::Type entityID)
+        const std::string& getTag(size entityID)
         {
             return tags[entityID];
         }
 
 
-        ECS::Type getNextEntityIndex();
-
-        ECS::Type allocateEntity(const std::string& tag);
-
         
 };
+}
 
-#define MemoryPool_()           EntityMemoryPool::getInstance();
-#define AllocateEntity_(tag)    EntityMemoryPool::getInstance().allocateEntity(tag)
+#define MemoryPool_()               ECS::EntityMemoryPool::getInstance()
+#define AllocateEntity_(tag)        ECS::EntityMemoryPool::getInstance().allocateEntity(tag)
+#define DeAllocateEntity(entityID)  ECS::EntityMemoryPool::getInstance().deallocateEntity(entityID)
 
 #endif

@@ -1,8 +1,14 @@
 #include "EntityManager.h"
 
-
+namespace ECS
+{
 EntityManager::EntityManager()
 {
+    Log_(Log::System, Log::EntityManager, "Initializing..")
+
+    MemoryPool_();
+
+    Log_(Log::System, Log::EntityManager, "Initialized successfully!")
 }
 
 
@@ -24,13 +30,17 @@ Entity EntityManager::addEntity(const std::string& tag)
     return entity;
 }
 
-void EntityManager::update()
+void EntityManager::destroyEntity(Entity entity)
 {
+    Log_(Log::Debug, Log::EntityManager, "Destroying entity {} ", entity.getID());
+    destroyQueue.push_back(entity);
+}
 
+
+void EntityManager::update()
+{   
     createEntities();
     destroyEntities();
-    
-
 }
 
 void EntityManager::createEntities()
@@ -60,14 +70,21 @@ void EntityManager::destroyEntities()
 
     for (auto entity : destroyQueue)
     {
-        auto iterator = std::find(destroyQueue.begin(), destroyQueue.end(), entity);
-        if (iterator == destroyQueue.end())
+        auto iterator = std::find(entities.begin(), entities.end(), entity);
+        if (iterator == entities.end())
         {
             Log_(Log::Warning, Log::EntityManager, "Entity ID {} not found for destruction", entity.getID());
             return;
         }
         entities.erase(iterator);
+        Log_(Log::Trace, Log::EntityManager, "Destroyed entities location {}", std::distance(entities.begin(), iterator) );
     }
-    Log_(Log::Debug, Log::EntityManager, "Cleared destroy Queue");
     destroyQueue.clear();
+    Log_(Log::Debug, Log::EntityManager, "Cleared destroy Queue");
+}
+
+std::vector<Entity> EntityManager::getEntities()
+{
+    return entities;
+}
 }

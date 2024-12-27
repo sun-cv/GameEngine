@@ -1,23 +1,31 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
-#include <iostream>
+#include "Core.h"
 
-#include "EngineCore.h"
-#include "EventCore.h"
 #include "WindowController.h"
 #include "InputController.h"
-#include "EntityMemoryPool.h"
-#include "EntityManager.h"
+
+#include "ShaderManager.h"
+#include "materialManager.h"
 
 class Engine
 {
     private:
         bool running;   
 
-        std::unique_ptr<WindowController>           windowController;
-        std::unique_ptr<InputController>            inputController;
-        std::unique_ptr<EntityManager>              entityManager;
+        std::shared_ptr<Toolkit::Debug>                  debug;
+
+        std::shared_ptr<WindowController>       windowController;
+        std::shared_ptr<InputController>        inputController;
+
+        std::shared_ptr<ECS::EntityManager>     entityManager;
+        
+        std::shared_ptr<TextureManager>         textureManager;
+        std::shared_ptr<ShaderManager>          shaderManager;
+        std::shared_ptr<MaterialManager>        materialManager;
+
+        std::shared_ptr<Renderer>               renderer;
 
     public:
         Engine();
@@ -29,7 +37,6 @@ class Engine
 
         void run();
 
-        void debug();
         void mark();
         void processInput();
         void update();

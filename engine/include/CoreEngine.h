@@ -1,5 +1,5 @@
-#ifndef ENGINE_CORE_H
-#define ENGINE_CORE_H
+#ifndef CORE_ENGINE_H 
+#define CORE_ENGINE_H
 
 #include <glm/glm.hpp>
 #include <iostream>
@@ -9,11 +9,8 @@
 #include <vector>
 #include <functional>
 #include <algorithm>
-#include <tuple>
 
 #include "Log.h"
-#include "Vector2.h"
-
 
 #endif
 

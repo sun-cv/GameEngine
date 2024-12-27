@@ -1,7 +1,7 @@
 #ifndef EVENT_H
 #define EVENT_H
 
-#include "EngineCore.h"
+#include "CoreEngine.h"
 #include <functional>
 
 
@@ -53,22 +53,22 @@ static const char* eventStrings[] = {
 
 
 #define EventClassType(type)\
-    virtual EventType getEventType() const override { return getStaticType(); }\
-    virtual const char* getName() const override { return #type; }\
-    static EventType getStaticType() { return EventType::type; }
+    virtual EventType   getEventType()  const override  { return getStaticType(); }\
+    virtual const char* getName()       const override  { return #type; }\
+    static EventType    getStaticType()                 { return EventType::type; }
 
 
 class Event 
 {
     private:
     public:
-        bool handled                        = false;
+        bool handled                            = false;
     
-        virtual ~Event()                    = default;
-        virtual EventType getEventType()    const = 0;
-        virtual const char* getName()       const = 0;
+        virtual ~Event()                        = default;
+        virtual EventType getEventType()        const = 0;
+        virtual const char* getName()           const = 0;
             
-        virtual std::string toString()      const { return getName(); }
+        virtual std::string toString()          const { return getName(); }
 
 };
 
@@ -91,7 +91,7 @@ class EventDispatcher
         void registerListener(EventType type, EventCallbackFn callback)
         {
             listeners[type].push_back(callback);
-            auto eventTypeIndex = static_cast<size_t>(type); // Convert enum to index
+            auto eventTypeIndex = static_cast<size_t>(type); 
             Log_(Log::Debug, Log::EventDispatcher, "Registering listener {}", eventStrings[eventTypeIndex] );
         }
 

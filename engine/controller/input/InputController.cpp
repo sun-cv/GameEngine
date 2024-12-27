@@ -1,16 +1,102 @@
 #include "InputController.h"
 
 
-InputController::InputController()
+InputController::InputController(std::shared_ptr<WindowController> windowController) : windowController(windowController)
 {
     Log_(Log::System, Log::cInput, "Initializing..")
-    createListeners();
+    
+    registerListeners();
+    registerCallbacks();
+
     Log_(Log::System, Log::cInput, "Initialized successfully!")
 }
 
 
 InputController::~InputController()
 {
+}
+
+void InputController::registerListeners()
+{
+    using namespace std::placeholders;
+
+    Listener_(EventType::InputEvent,    std::bind(&InputController::createInputEvents, this, _1));
+    Listener_(EventType::MouseScrolled, std::bind(&InputController::createInputEvents, this, _1));
+    Listener_(EventType::MouseMoved,    std::bind(&InputController::createInputEvents, this, _1));
+}
+
+void InputController::registerCallbacks()
+{
+    GLFWwindow *window = windowController->getWindow(); 
+
+    glfwSetKeyCallback          (window, keyCallback);
+    glfwSetMouseButtonCallback  (window, mouseCallback);
+    glfwSetScrollCallback       (window, mouseScrollCallback);
+
+    // Enable to track cursor position
+    // glfwSetCursorPosCallback (window, cursorPositionCallback);
+
+    Log_(Log::System, Log::cInput, "Registered input callbacks");
+}
+
+
+void InputController::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    InputController* controller = static_cast<InputController*>(glfwGetWindowUserPointer(window));
+    if (controller)
+    {
+        controller->onKey(key, scancode, action, mods);
+        Log_(Log::Trace, Log::cInput, "Key callback invoked");
+    }
+}
+void InputController::mouseCallback(GLFWwindow* window, int key, int action, int mods)
+{
+    InputController* controller = static_cast<InputController*>(glfwGetWindowUserPointer(window));
+    if (controller)
+    {
+        controller->onMouse(key, action, mods);
+        Log_(Log::Trace, Log::cInput, "Mouse click callback invoked");
+    }
+}
+void InputController::mouseScrollCallback(GLFWwindow* window, double xoffset, double yoffset)
+{
+    InputController* controller = static_cast<InputController*>(glfwGetWindowUserPointer(window));
+    if (controller)
+    {
+        controller->onScroll(xoffset, yoffset);
+        Log_(Log::Trace, Log::cInput, "Mouse scroll callback invoked");
+    }
+}
+void InputController::cursorPositionCallback(GLFWwindow* window, double xpos, double ypos)
+{
+    InputController* controller = static_cast<InputController*>(glfwGetWindowUserPointer(window));
+    if (controller)
+    {
+        controller->onMove(xpos, ypos);
+        Log_(Log::Trace, Log::cInput, "Cursor position callback invoked");
+    }
+}
+
+
+void InputController::onKey(int key, int scancode, int action, int mods)
+{
+    InputEvent event("key", key, scancode, action, mods);
+    Emit_(event);
+}
+void InputController::onMouse(int key, int action, int mods)
+{
+    InputEvent event("mouse", key, 0, action, mods);
+    Emit_(event);
+}
+void InputController::onScroll(double xoffset, double yoffset)
+{
+    MouseScrolledEvent event(xoffset, yoffset);
+    Emit_(event);
+}
+void InputController::onMove(double xpos, double ypos)
+{
+    MouseMovedEvent event(xpos, ypos);
+    Emit_(event);
 }
 
 
@@ -80,46 +166,35 @@ void InputController::handleKeyPress(KeyPressedEvent& event)
         CloseWindow event;
         Emit_(event);
     }
-    Log_(Log::Debug, Log::cInput, "Key pressed event id: {}", event.getKeyCode());
+    Log_(Log::Trace, Log::cInput, "Key pressed event id: {}", event.getKeyCode());
 }
 
 
 void InputController::handleKeyRelease(KeyReleasedEvent& event)
 {
-
 }
 
 
 void InputController::handleKeyRepeat(KeyRepeatedEvent& event)
 {
-
 }
-
 
 
 void InputController::handleMouseClick(MouseEvent& event)
 {
-    Log_(Log::Debug, Log::cInput, "Mouse click button event id: {}", event.getButtonCode());
+    Log_(Log::Trace, Log::cInput, "Mouse click button event id: {}", event.getButtonCode());
 }
 
 
 void InputController::handleMouseScroll(MouseScrolledEvent& event)
 {
-    Log_(Log::Debug, Log::cInput, "Mouse scroll event offset: y {}", event.getyoffset());
+    Log_(Log::Trace, Log::cInput, "Mouse scroll event offset: y {}", event.getyoffset());
 }
 
 
 void InputController::handleMouseMoved(MouseMovedEvent& event)
 {
-    Log_(Log::Debug, Log::cInput, "Mouse Moved event pos: x {} : y {}", event.getxpos(), event.getypos());
+    Log_(Log::Trace, Log::cInput, "Mouse Moved event pos: x {} : y {}", event.getxpos(), event.getypos());
 }
 
 
-void InputController::createListeners()
-{
-    using namespace std::placeholders;
-
-    Listener_(EventType::InputEvent, std::bind(&InputController::createInputEvents, this, _1));
-    Listener_(EventType::MouseScrolled, std::bind(&InputController::createInputEvents, this, _1));
-    Listener_(EventType::MouseMoved, std::bind(&InputController::createInputEvents, this, _1));
-}

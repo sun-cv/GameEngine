@@ -22,16 +22,28 @@ set(INCLUDE_DIRECTORIES
     ${CMAKE_SOURCE_DIR}/engine/ecs/entity
     ${CMAKE_SOURCE_DIR}/engine/include
     ${CMAKE_SOURCE_DIR}/engine/system
+    ${CMAKE_SOURCE_DIR}/engine/system/asset
+    ${CMAKE_SOURCE_DIR}/engine/system/asset/materialManager
+    ${CMAKE_SOURCE_DIR}/engine/system/asset/textureManager
+    ${CMAKE_SOURCE_DIR}/engine/system/asset/textureManager/texture
     ${CMAKE_SOURCE_DIR}/engine/system/event
+    ${CMAKE_SOURCE_DIR}/engine/system/render
+    ${CMAKE_SOURCE_DIR}/engine/system/render/shaderManager
+    ${CMAKE_SOURCE_DIR}/engine/system/render/src
     ${CMAKE_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/libs
     ${CMAKE_SOURCE_DIR}/libs/glfw/include
     ${CMAKE_SOURCE_DIR}/libs/glad/include
+    ${CMAKE_SOURCE_DIR}/libs/glm
+    ${CMAKE_SOURCE_DIR}/libs/imgui
     ${CMAKE_SOURCE_DIR}/libs/nlohmann
     ${CMAKE_SOURCE_DIR}/libs/stb
     ${CMAKE_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/util
     ${CMAKE_SOURCE_DIR}/util/class
+    ${CMAKE_SOURCE_DIR}/util/debug
+    ${CMAKE_SOURCE_DIR}/util/debug/test
+    ${CMAKE_SOURCE_DIR}/util/file
     ${CMAKE_SOURCE_DIR}/util/log
     ${CMAKE_SOURCE_DIR}
 )

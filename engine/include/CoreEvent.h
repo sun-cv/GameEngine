@@ -1,5 +1,5 @@
-#ifndef EVENT_CORE_H
-#define EVENT_CORE_H
+#ifndef CORE_EVENT_H 
+#define CORE_EVENT_H 
 
 #include "Event.h"
 #include "InputEvent.h"

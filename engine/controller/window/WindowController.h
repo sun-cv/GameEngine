@@ -1,47 +1,42 @@
 #ifndef WINDOW_CONTROLLER_H
-#define WINDOW_CONTROLLER_h
+#define WINDOW_CONTROLLER_H
 
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
-#include "EngineCore.h"
-#include "EventCore.h"
-#include "InputController.h"
+
+#include <imgui/imgui.h>
+#include <imgui/imgui_impl_glfw.h>
+#include <imgui/imgui_impl_opengl3.h>
+
+#include "CoreEngine.h"
+#include "CoreEvent.h"
+#include "CoreRender.h"
+
 
 
 class WindowController
 {
     private:
-
         const char *title                       = "Game Engine";
         GLFWwindow *window;
-
-        static void framebuffer_size_callback   (GLFWwindow* window, int width, int height);
-        static void window_size_callback        (GLFWwindow* window, int width, int height);
-        static void window_refresh_callback     (GLFWwindow* window);
-        static void keyCallback                 (GLFWwindow* window, int key, int scancode, int action, int mods);
-        static void mouseCallback               (GLFWwindow* window, int button, int action, int mods);
-        static void mouseScrollCallback         (GLFWwindow* window, double xoffset, double yoffset);
-        static void cursorPositionCallback      (GLFWwindow* window, double xpos, double ypos);
-
-        void onKey                              (int key, int scancode, int action, int mods);
-        void onMouse                            (int button, int action, int mods);
-        void onScroll                           (double xoffset, double yoffset);
-        void onMove                             (double xpos, double ypos);
-        
-        void createListeners();
-        void closeWindow                        (Event& event);
-
-    public:
     
+    public:
         int width                               = 1280;
         int height                              = 720; 
 
+    private:
+        static void framebuffer_size_callback   (GLFWwindow* window, int width, int height);
+        static void window_size_callback        (GLFWwindow* window, int width, int height);
+        static void window_refresh_callback     (GLFWwindow* window);
+        
+        void registerListeners();
+        void closeWindow                        (Event& event);
 
-
+    public:
         WindowController();
         ~WindowController();
 
-        bool initialize();
+        void initialize();
         bool active();
 
         void pollEvents();
@@ -51,6 +46,7 @@ class WindowController
 
         void terminate();
 
+        GLFWwindow* getWindow() { return window; };
 };
 
 

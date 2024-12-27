@@ -4,28 +4,44 @@
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
 
-#include "EngineCore.h"
-#include "EventCore.h"
+#include "CoreEngine.h"
+#include "CoreEvent.h"
+
+#include "WindowController.h"
 
 class InputController
 {
-private:
-public:
-    InputController         ();
-    ~InputController        ();
+    private:
 
-    void createInputEvents  (Event& event);
+        std::shared_ptr<WindowController>       windowController;
 
-    void handleKeyPress     (KeyPressedEvent& event);
-    void handleKeyRelease   (KeyReleasedEvent& event);
-    void handleKeyRepeat    (KeyRepeatedEvent& event);
+        void registerListeners                  ();
+        void registerCallbacks                  ();
+        void createInputEvents                  (Event& event);
 
-    void handleMouseClick   (MouseEvent& event);
-    void handleMouseScroll  (MouseScrolledEvent& event);
-    void handleMouseMoved   (MouseMovedEvent& event);
+        static void keyCallback                 (GLFWwindow* window, int key, int scancode, int action, int mods);
+        static void mouseCallback               (GLFWwindow* window, int button, int action, int mods);
+        static void mouseScrollCallback         (GLFWwindow* window, double xoffset, double yoffset);
+        static void cursorPositionCallback      (GLFWwindow* window, double xpos, double ypos);
+
+        void onKey                              (int key, int scancode, int action, int mods);
+        void onMouse                            (int button, int action, int mods);
+        void onScroll                           (double xoffset, double yoffset);
+        void onMove                             (double xpos, double ypos);
+
+        void handleKeyPress                     (KeyPressedEvent& event);
+        void handleKeyRelease                   (KeyReleasedEvent& event);
+        void handleKeyRepeat                    (KeyRepeatedEvent& event);
+
+        void handleMouseClick                   (MouseEvent& event);
+        void handleMouseScroll                  (MouseScrolledEvent& event);
+        void handleMouseMoved                   (MouseMovedEvent& event);
 
 
-    void createListeners    ();
+
+    public:
+        InputController                          (std::shared_ptr<WindowController> windowController);
+        ~InputController                         ();
 
 };
 

@@ -1,7 +1,7 @@
 #ifndef MOUSE_EVENT_H
 #define MOUSE_EVENT_H
 
-#include "EngineCore.h"
+#include "CoreEngine.h"
 #include "Event.h"
 
 class MouseEvent : public Event

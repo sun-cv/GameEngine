@@ -1,58 +1,15 @@
 #ifndef LOG_H
 #define LOG_H
 
-#include <iostream>
 #include <mutex>
 #include <set>
 #include <sstream>
+#include <iostream>
+
+#include "LogDefinitions.h"
 
 namespace Log {
-enum LogLevel {
-    Trace,
-    Debug,
-    System,
-    Warning,
-    Error,
-    Fatal,
-};
-
-static const char* levelStrings[] = 
-{
-    "  [Trace]",
-    "  [Debug]",
-    " [System]",
-    "[Warning]",
-    "  [Error]",
-    "  [Fatal]"
-};
- 
-
-enum LogCategory {
-    Engine,
-    Event,
-    EventDispatcher,
-    cWindow,
-    cInput,
-    EMP,
-    EntityManager,
-
-    Count,
-};
-
-static const char* categoryStrings[] = 
-{
-    "Engine",
-    "Event",
-    "EventDispatcher",
-    "WindowController",
-    "InputController",
-    "EntityMemoryPool",
-    "EntityManager",
-
-    "Count"
-};
-
-
+    
 class Logger {
     private:
         Logger();
@@ -123,6 +80,14 @@ class Logger {
             std::cout << marker << result << std::endl;
         }
 
+        template <typename T>
+        void quicklog(T value)
+        {
+            std::stringstream ss;
+            ss << value;
+            std::cout << std::string(levelStrings[1]) << "::" << "[local] " << ss.str() << std::endl;
+        }
+
         template <typename... Categories> void addCategories(Categories... categories)
         {
             if constexpr(sizeof...(categories) > 0)
@@ -135,9 +100,12 @@ class Logger {
                 log(Log::System, Log::Engine, "Active log categories: " + ss.str());
             }
         }
+
 };
 }
 #define Log_(level, category, format, ...)      Log::Logger::getInstance().log(level, category, format, __VA_ARGS__);
+#define Log__(format)                           Log::Logger::getInstance().quicklog(format);
 #define LogLevel(level)                         Log::Logger::getInstance().setLogLevel(level);
 #define LogCategories(...)                      Log::Logger::getInstance().addCategories(__VA_ARGS__)
+
 #endif

@@ -1,16 +1,14 @@
 #include "Engine.h"
 
-
 Engine::Engine() : running(false)
 {
+    log();
 }
 
 
 Engine::~Engine()
 {
-
 }
-
 
 void Engine::log()
 {
@@ -21,20 +19,22 @@ void Engine::log()
 
 void Engine::construct()
 {
-    log();
-
-    windowController                            = std::make_unique<WindowController>();
-
-    if (!windowController->initialize())
+    windowController                            = std::make_shared<WindowController>();
+    inputController                             = std::make_shared<InputController>(windowController);
+    if (!windowController->active())
     {
         return;
     }
-    EntityMemoryPool::getInstance();
+
+    entityManager                               = std::make_shared<ECS::EntityManager>();
+
+    textureManager                              = std::make_shared<TextureManager>();
+    shaderManager                               = std::make_shared<ShaderManager>();
+    materialManager                             = std::make_shared<MaterialManager>(shaderManager, textureManager);
     
-    inputController                             = std::make_unique<InputController>();
-    entityManager                               = std::make_unique<EntityManager>();
+    renderer                                    = std::make_shared<Renderer>();
 
-
+    debug                                       = std::make_shared<Toolkit::Debug>();
     engage();
 }
 
@@ -47,28 +47,60 @@ void Engine::engage()
 
 void Engine::run()
 {
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    debug();
+    ImGui::CreateContext();
+    ImGui_ImplGlfw_InitForOpenGL(windowController->getWindow(), true);
+    ImGui_ImplOpenGL3_Init("#version 330");
+    ImGui::StyleColorsDark();
 
-while (windowController->active())
+    Toolkit::Debug* currentTest = nullptr;
+    Toolkit::DebugMenu* menu = new Toolkit::DebugMenu(currentTest);
+    
+    currentTest = menu;
+    menu->registerTest<Toolkit::TestClearColor>("Clear Color");
+    menu->registerTest<Toolkit::TestTexture2D>("Texture 2D");
+    menu->registerTest<Toolkit::BatchRender>("Batch Rendering");
+
+    while (windowController->active())
     {
         mark();
         processInput();
+
+        {
+            ImGui_ImplOpenGL3_NewFrame();
+            ImGui_ImplGlfw_NewFrame();
+            ImGui::NewFrame();
+            if (currentTest)
+            {
+                currentTest->onUpdate(0.0f);
+                currentTest->onRender();
+                ImGui::Begin("Debug");
+                if (currentTest != menu && ImGui::Button("<-"))
+                {
+                    delete currentTest;
+                   currentTest = menu;
+                }
+            currentTest->onImGuiRender();
+            ImGui::End();
+            }
+            ImGui::Render();
+            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        }
+
         update();
         render();
         display();
     }
-
 }
 
 
-void Engine::debug()
-{
-}
+
 
 void Engine::mark()
-{ 
-    Entity entity = entityManager->addEntity("test");
+{
+    renderer->clear();
 }
 
 void Engine::processInput()
@@ -83,11 +115,11 @@ void Engine::update()
 
 void Engine::render()
 {
+    
 }
 
 void Engine::display()
 {
-    windowController->clear();
     windowController->swapBuffers();
 }
 
@@ -97,5 +129,8 @@ void Engine::shutdown()
     {
         running = false;
         windowController->terminate();
+
+        ImGui_ImplOpenGL3_Shutdown();
+        ImGui_ImplGlfw_Shutdown();
     }
 }

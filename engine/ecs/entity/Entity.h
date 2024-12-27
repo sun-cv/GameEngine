@@ -1,16 +1,21 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include "ECSCore.h"
+#include "CoreECS.h"
+#include "EntityMemoryPool.h"
 
 class EntityMemoryPool;
 
+namespace ECS
+{
 class Entity
 {
     private:
-        ECS::Type id;
+        size id;
+    
     public:
-        Entity(ECS::Type id) : id(id) {};
+        Entity(size id) : id(id) {};
+        
         template<typename component>
         component & getComponent()
         {
@@ -23,14 +28,14 @@ class Entity
             return EntityMemoryPool::Instance().hasComponent<component>(id);
         }
 
-        ECS::Type getID()
+        size getID()
         {
             return id;
         }
 
         bool isValid()
         {
-            return id != ECS::INVALID_ENTITY;
+            return id != INVALID_ENTITY;
         }
 
         bool operator == (const Entity& other) const 
@@ -43,5 +48,6 @@ class Entity
             return !(*this == other);
         }
 };
+}
 
 #endif

@@ -1,10 +1,8 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include <iostream>
-
 #include "Engine.h"
-#include "EngineCore.h"
+#include "CoreEngine.h"
 
 namespace Sun {
     Engine engine;

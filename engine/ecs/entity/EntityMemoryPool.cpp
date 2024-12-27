@@ -1,7 +1,7 @@
 #include "EntityMemoryPool.h"
-#include "Entity.h"
 
-
+namespace ECS
+{
 EntityMemoryPool::EntityMemoryPool()
 {
     Log_(Log::System, Log::EMP, "Initializing..");
@@ -14,7 +14,7 @@ EntityMemoryPool::EntityMemoryPool()
 }   
 
 
-ECS::Type EntityMemoryPool::getNextEntityIndex()
+size EntityMemoryPool::getNextEntityIndex()
 {
     auto iterator = std::find(active.begin(), active.end(), false);
     if (iterator == active.end())
@@ -27,9 +27,9 @@ ECS::Type EntityMemoryPool::getNextEntityIndex()
 }
 
 
-ECS::Type EntityMemoryPool::allocateEntity(const std::string& tag)
+size EntityMemoryPool::allocateEntity(const std::string& tag)
 {   
-    ECS::Type availableID= getNextEntityIndex();
+    size availableID= getNextEntityIndex();
     if (availableID == ECS::INVALID_ENTITY)
     {
         return ECS::INVALID_ENTITY;
@@ -39,8 +39,12 @@ ECS::Type EntityMemoryPool::allocateEntity(const std::string& tag)
     return availableID;
 }
 
+void EntityMemoryPool::deallocateEntity(size entityID)
+{
+    active[entityID] = false;
+}
 
-void EntityMemoryPool::initializeEntity(ECS::Type entityID, const std::string& tag)
+void EntityMemoryPool::initializeEntity(size entityID, const std::string& tag)
 {
     resetComponent<Enemy>   (pool, entityID);
     resetComponent<Lifespan>(pool, entityID);
@@ -53,4 +57,6 @@ void EntityMemoryPool::initializeEntity(ECS::Type entityID, const std::string& t
     tags[entityID] = tag;
 
     Log_(Log::Debug, Log::EMP, "Instantiated entity with id {}", entityID);
+}
+
 }

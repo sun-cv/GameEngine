@@ -31,6 +31,8 @@
 *.out
 *.app
 
+assets/
 build/
 libs/
+util/debug/test
 αrchive/
