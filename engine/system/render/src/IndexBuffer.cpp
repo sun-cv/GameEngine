@@ -1,6 +1,6 @@
 #include "IndexBuffer.h"
 
-
+#include "RenderGladGLFW.h"
 
 IndexBuffer::IndexBuffer(const unsigned int* data, unsigned int count) : count(count)
 {

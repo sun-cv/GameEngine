@@ -1,7 +1,6 @@
-#ifndef MOUSE_EVENT_H
-#define MOUSE_EVENT_H
+#pragma once
 
-#include "CoreEngine.h"
+#include "CoreUtility.h"
 #include "Event.h"
 
 class MouseEvent : public Event
@@ -87,5 +86,3 @@ class MouseMovedEvent : public MouseEvent
 	    	return ss.str();
 	    }
 };
-
-#endif

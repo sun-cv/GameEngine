@@ -1,13 +1,17 @@
-#ifndef RENDER_COMPONENT_H
-#define RENDER_COMPONENT_H
+#pragma once
 
 #include "Component.h"
+
+#include "Material.h"
+#include "Mesh.h"
 
 class Render : public Component
 {
     private:
     public:
         bool state                              = true;
-};
 
-#endif
+        std::shared_ptr<Mesh>                   mesh;
+        std::shared_ptr<Material>               material;
+
+};

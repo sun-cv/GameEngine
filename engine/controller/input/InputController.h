@@ -1,13 +1,9 @@
-#ifndef INPUT_CONTROLLER_H
-#define INPUT_CONTROLLER_H
+#pragma once
 
-#include <glad/glad.h>
-#include <glfw/glfw3.h>
-
-#include "CoreEngine.h"
-#include "CoreEvent.h"
-
+#include "CoreUtility.h"
 #include "WindowController.h"
+#include "ForwardEvent.h"
+
 
 class InputController
 {
@@ -44,5 +40,3 @@ class InputController
         ~InputController                         ();
 
 };
-
-#endif

@@ -1,5 +1,9 @@
 #include "WindowController.h"
 
+#include "CoreEvent.h"
+#include "RenderGladGLFW.h"
+
+
 WindowController::WindowController()
 {
     Log_(Log::System, Log::cWindow, "Initializing..")
@@ -54,6 +58,9 @@ void WindowController::window_size_callback(GLFWwindow* window, int width, int h
     {
         controller->width                       = width;
         controller->height                      = height;
+
+        Log__(width);
+        Log__(height);
     }
 }
 
@@ -150,9 +157,10 @@ void WindowController::closeWindow(Event& event)
     glfwSetWindowShouldClose(window, GLFW_TRUE);
 }
 
-void WindowController::terminate()
+void WindowController::shutdown()
 {
     glfwDestroyWindow(window);
     glfwTerminate();
+    Log_(Log::System, Log::cWindow, "Powering down..")
 }
 

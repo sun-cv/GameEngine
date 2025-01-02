@@ -1,5 +1,10 @@
 #include "VertexArray.h"
 
+#include "RenderGladGLFW.h"
+
+#include "VertexBuffer.h"
+#include "VertexBufferLayout.h"
+#include "IndexBuffer.h"
 
 VertexArray::VertexArray()
 {

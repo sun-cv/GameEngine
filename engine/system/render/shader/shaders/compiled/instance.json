@@ -1,0 +1,6 @@
+{
+    "name": "instance",
+    "vertexPath": "D:/Projects/Active/GameEngine/engine/system/render/shader/shaders/vertex/instance.shader",
+    "fragmentPath": "D:/Projects/Active/GameEngine/engine/system/render/shader/shaders/fragment/projection.shader"
+  }
+  

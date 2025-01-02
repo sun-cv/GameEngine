@@ -6,7 +6,7 @@ EntityMemoryPool::EntityMemoryPool()
 {
     Log_(Log::System, Log::EMP, "Initializing..");
 
-    initializeComponents<0, ECS::ComponentCount>(pool);
+    initializeComponents<0, ComponentCount>     (pool);
     initializeVector<bool>                      (active);
     initializeVector<std::string>               (tags);
 
@@ -14,43 +14,51 @@ EntityMemoryPool::EntityMemoryPool()
 }   
 
 
-size EntityMemoryPool::getNextEntityIndex()
+size_t EntityMemoryPool::getNextEntityIndex()
 {
     auto iterator = std::find(active.begin(), active.end(), false);
     if (iterator == active.end())
     {
         Log_(Log::Error, Log::EMP, "No available entity allocation returning INVALID_ENTITY");
-        return ECS::INVALID_ENTITY;
+        return INVALID_ENTITY;
     }
-
     return std::distance(active.begin(), iterator);
 }
 
 
-size EntityMemoryPool::allocateEntity(const std::string& tag)
+EntityMemoryPool & EntityMemoryPool::getInstance()
+{
+
+    static EntityMemoryPool instance;
+    return instance;
+
+}
+
+size_t EntityMemoryPool::allocateEntity(const std::string& tag)
 {   
-    size availableID= getNextEntityIndex();
-    if (availableID == ECS::INVALID_ENTITY)
+    size_t availableID= getNextEntityIndex();
+    if (availableID == INVALID_ENTITY)
     {
-        return ECS::INVALID_ENTITY;
+        return INVALID_ENTITY;
     }
 
     initializeEntity(availableID, tag);
     return availableID;
 }
 
-void EntityMemoryPool::deallocateEntity(size entityID)
+void EntityMemoryPool::deallocateEntity(size_t entityID)
 {
     active[entityID] = false;
 }
 
-void EntityMemoryPool::initializeEntity(size entityID, const std::string& tag)
+void EntityMemoryPool::initializeEntity(size_t entityID, const std::string& tag)
 {
     resetComponent<Enemy>   (pool, entityID);
     resetComponent<Lifespan>(pool, entityID);
     resetComponent<Player>  (pool, entityID);
     resetComponent<Position>(pool, entityID);
     resetComponent<Render>  (pool, entityID);
+    resetComponent<Title>   (pool, entityID);
     resetComponent<Velocity>(pool, entityID);
 
     active[entityID] = true;
@@ -58,5 +66,4 @@ void EntityMemoryPool::initializeEntity(size entityID, const std::string& tag)
 
     Log_(Log::Debug, Log::EMP, "Instantiated entity with id {}", entityID);
 }
-
 }

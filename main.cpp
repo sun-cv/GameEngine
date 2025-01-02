@@ -1,28 +1,17 @@
-#ifndef MAIN_H
-#define MAIN_H
+#pragma once
 
 #include "Engine.h"
-#include "CoreEngine.h"
-
-namespace Sun {
-    Engine engine;
-}
 
 int main()
 {
+
     Log_(Log::System, Log::Engine, "Initiating startup sequence..");
 
     {
-        Sun::engine.construct();
-
-        Sun::engine.run();
-
-        Sun::engine.shutdown();
+        Engine engine;
     }
-
+    
     Log_(Log::System, Log::Engine, "Safe shutdown sequence complete!");
 
     return 1;
 };
-
-#endif

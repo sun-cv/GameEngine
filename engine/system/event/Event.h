@@ -1,7 +1,6 @@
-#ifndef EVENT_H
-#define EVENT_H
+#pragma once
 
-#include "CoreEngine.h"
+#include "CoreUtility.h"
 #include <functional>
 
 
@@ -119,5 +118,3 @@ inline std::ostream& operator<<(std::ostream& os, const Event& e)
 
 #define Listener_(eventType, callback)          EventDispatcher::getInstance().registerListener(eventType, callback);
 #define Emit_(event)                            EventDispatcher::getInstance().dispatch(event);
-
-#endif

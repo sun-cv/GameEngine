@@ -1,18 +1,8 @@
-#ifndef WINDOW_CONTROLLER_H
-#define WINDOW_CONTROLLER_H
+#pragma once
 
-#include <glad/glad.h>
-#include <glfw/glfw3.h>
-
-#include <imgui/imgui.h>
-#include <imgui/imgui_impl_glfw.h>
-#include <imgui/imgui_impl_opengl3.h>
-
-#include "CoreEngine.h"
-#include "CoreEvent.h"
-#include "CoreRender.h"
-
-
+#include "CoreUtility.h"
+#include "ForwardEvent.h"
+#include "RenderGladGLFW.h"
 
 class WindowController
 {
@@ -44,11 +34,7 @@ class WindowController
         void clear();
         void swapBuffers();
 
-        void terminate();
+        void shutdown();
 
         GLFWwindow* getWindow() { return window; };
 };
-
-
-
-#endif;

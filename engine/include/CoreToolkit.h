@@ -1,7 +1,4 @@
-#ifndef CORE_TOOLKIT_H 
-#define CORE_TOOLKIT_H
+#pragma once
 
-#include "Debug.h"
 #include "FileManager.h"
 
-#endif

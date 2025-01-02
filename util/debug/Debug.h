@@ -1,8 +1,6 @@
-#ifndef DEBUG_H
-#define DEBUG_H 
+#pragma once
 
-
-#include "CoreEngine.h"
+#include "CoreUtility.h"
 #include "imgui/imgui.h"
 
 
@@ -33,13 +31,11 @@ class DebugMenu : public Debug
         void onRender() override;
         void onImGuiRender() override;
 
-        template <typename T>
+        template <typename test>
         void registerTest(const std::string& name)
         {
             Log_(Log::Debug, Log::Toolkit, "Registering test {}", name);
-            tests.push_back(std::make_pair(name, [](){ return new T(); }));
+            tests.push_back(std::make_pair(name, [](){ return new test(); }));
         }
 };
 }
-
-#endif

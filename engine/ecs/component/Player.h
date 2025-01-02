@@ -1,13 +1,10 @@
-#ifndef PLAYER_COMPONENT_H
-#define PLAYER_COMPONENT_H
+#pragma once
 
 #include "Component.h"
 
 class Player : public Component
 {
-    public:
     private:
+    public:
         bool state                               = true;
 };
-
-#endif

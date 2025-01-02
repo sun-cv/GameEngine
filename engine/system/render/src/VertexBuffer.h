@@ -1,10 +1,6 @@
-#ifndef VERTEX_BUFFER_H
-#define VERTEX_BUFFER_H
+#pragma once
 
-#include <glad/glad.h>
-#include <glfw/glfw3.h>
-
-#include "Log.h"
+#include "CoreUtility.h"
 
 class VertexBuffer
 {
@@ -19,5 +15,3 @@ class VertexBuffer
     void unbind() const;
 
 };
-
-#endif

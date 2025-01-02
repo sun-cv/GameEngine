@@ -34,5 +34,5 @@
 assets/
 build/
 libs/
-util/debug/test
+# util/debug/test
 αrchive/

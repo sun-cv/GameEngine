@@ -1,5 +1,8 @@
 #include "InputController.h"
 
+#include "CoreEvent.h"
+#include "RenderGladGLFW.h"
+
 
 InputController::InputController(std::shared_ptr<WindowController> windowController) : windowController(windowController)
 {

@@ -1,24 +1,22 @@
 #include "Engine.h"
 
-Engine::Engine() : running(false)
+Engine::Engine()
 {
-    log();
+    LogLevel                                    (Log::Debug);
+    LogCategories                               ();
+    construct();
 }
 
 
 Engine::~Engine()
 {
+    shutdown();
 }
-
-void Engine::log()
-{
-    LogLevel                                    (Log::Debug);
-    LogCategories                               ();
-}
-
 
 void Engine::construct()
 {
+    Log_(Log::System, Log::Engine, "Initiating startup sequence..");
+
     windowController                            = std::make_shared<WindowController>();
     inputController                             = std::make_shared<InputController>(windowController);
     if (!windowController->active())
@@ -26,71 +24,37 @@ void Engine::construct()
         return;
     }
 
-    entityManager                               = std::make_shared<ECS::EntityManager>();
-
+    meshManager                                 = std::make_shared<MeshManager>();
     textureManager                              = std::make_shared<TextureManager>();
     shaderManager                               = std::make_shared<ShaderManager>();
     materialManager                             = std::make_shared<MaterialManager>(shaderManager, textureManager);
-    
-    renderer                                    = std::make_shared<Renderer>();
 
-    debug                                       = std::make_shared<Toolkit::Debug>();
+    entityManager                               = std::make_shared<ECS::EntityManager>();
+    builder                                     = std::make_shared<ECS::EntityBuilder>(entityManager, meshManager, materialManager);
+
+    renderer                                    = std::make_shared<Renderer>();
+    renderSystem                                = std::make_shared<RenderSystem>(renderer, entityManager);
+    
+    testbench                                   = std::make_shared<Toolkit::Testbench>(windowController->getWindow());
+
     engage();
 }
 
 
 void Engine::engage()
 {
-    running = true;
     Log_(Log::System, Log::Engine, "All systems online. Engage!")
+    run();
 }
 
 void Engine::run()
 {
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    ImGui::CreateContext();
-    ImGui_ImplGlfw_InitForOpenGL(windowController->getWindow(), true);
-    ImGui_ImplOpenGL3_Init("#version 330");
-    ImGui::StyleColorsDark();
-
-    Toolkit::Debug* currentTest = nullptr;
-    Toolkit::DebugMenu* menu = new Toolkit::DebugMenu(currentTest);
-    
-    currentTest = menu;
-    menu->registerTest<Toolkit::TestClearColor>("Clear Color");
-    menu->registerTest<Toolkit::TestTexture2D>("Texture 2D");
-    menu->registerTest<Toolkit::BatchRender>("Batch Rendering");
-
     while (windowController->active())
     {
         mark();
         processInput();
-
-        {
-            ImGui_ImplOpenGL3_NewFrame();
-            ImGui_ImplGlfw_NewFrame();
-            ImGui::NewFrame();
-            if (currentTest)
-            {
-                currentTest->onUpdate(0.0f);
-                currentTest->onRender();
-                ImGui::Begin("Debug");
-                if (currentTest != menu && ImGui::Button("<-"))
-                {
-                    delete currentTest;
-                   currentTest = menu;
-                }
-            currentTest->onImGuiRender();
-            ImGui::End();
-            }
-            ImGui::Render();
-            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        }
-
-        update();
         render();
+        update();
         display();
     }
 }
@@ -100,7 +64,6 @@ void Engine::run()
 
 void Engine::mark()
 {
-    renderer->clear();
 }
 
 void Engine::processInput()
@@ -115,7 +78,8 @@ void Engine::update()
 
 void Engine::render()
 {
-    
+    renderSystem->render();
+    testbench->ImGui();
 }
 
 void Engine::display()
@@ -127,10 +91,7 @@ void Engine::shutdown()
 {
     Log_(Log::System, Log::Engine, "Core systems powering down..");
     {
-        running = false;
-        windowController->terminate();
-
-        ImGui_ImplOpenGL3_Shutdown();
-        ImGui_ImplGlfw_Shutdown();
+        windowController->shutdown();
+        testbench->shutdown();
     }
 }

@@ -1,10 +1,6 @@
-#ifndef INDEX_BUFFER_H
-#define INDEX_BUFFER_H
+#pragma once
 
-#include <glad/glad.h>
-#include <glfw/glfw3.h>
-
-#include "Log.h"
+#include "CoreUtility.h"
 
 class IndexBuffer
 {
@@ -20,5 +16,3 @@ class IndexBuffer
 
     inline unsigned int getCount() const { return count; };
 };
-
-#endif

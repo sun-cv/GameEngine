@@ -1,0 +1,5 @@
+{
+  "name": "texture",
+  "vertexPath": "D:/Projects/Active/GameEngine/engine/system/render/shader/shaders/vertex/texture.shader",
+  "fragmentPath": "D:/Projects/Active/GameEngine/engine/system/render/shader/shaders/fragment/texture.shader"
+}

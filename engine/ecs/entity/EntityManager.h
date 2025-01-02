@@ -1,8 +1,11 @@
-#ifndef ENTITY_MANAGER_H
-#define ENTITY_MANAGER_H
+#pragma once
 
-#include "CoreEngine.h"
-#include "CoreECS.h"
+#include "CoreUtility.h"
+#include "Entity.h"
+
+#include "MeshManager.h"
+#include "MaterialManager.h"
+
 
 namespace ECS
 {
@@ -13,22 +16,24 @@ class EntityManager
         std::vector<Entity>                     createQueue;
         std::vector<Entity>                     destroyQueue;
 
+        std::shared_ptr<MeshManager>            meshManager;
+        std::shared_ptr<MaterialManager>        materialManager;
+
+    private:
+        void createEntities ();
+        void destroyEntities();
+
     public:
         EntityManager();                         
        ~EntityManager();
 
-        Entity addEntity    (const std::string & tag);
-        void destroyEntity  (Entity entity);
+        void   update();
 
-        void update();
-        void createEntities ();
-        void destroyEntities();
+        Entity createEntity         (const std::string& tag);
+        void destroyEntity          (Entity entity);
 
         std::vector<Entity> getEntities();
-
-
 };
 }
 
-
-#endif
+#define CreateEntity(tag) ECS::EntityManager::createEntity(tag);

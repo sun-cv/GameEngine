@@ -1,5 +1,8 @@
 #include "Shader.h"
 
+#include <fstream>
+#include "RenderGladGLFW.h"
+
 Shader::Shader(const std::string name, const std::string vertexFilepath, const std::string fragmentFilepath) : name(name), vertexFilepath(vertexFilepath), fragmentFilepath(fragmentFilepath), rendererID(0)
 {
     rendererID = createShader(vertexFilepath, fragmentFilepath);
@@ -44,13 +47,13 @@ unsigned int Shader::compileShader(unsigned int type, const std::string& src)
 
 unsigned int Shader::createShader(const std::string& vertexFilepath, const std::string& fragmentFilepath)
 {
-    Log_(Log::System, Log::Shader, "Loading shader: {}", name);
+    Log_(Log::Debug, Log::Shader, "Loading shader: {}", name);
 
     std::string vertexShader   = parseShader(vertexFilepath);
     std::string fragmentShader = parseShader(fragmentFilepath);
 
-    Log_(Log::Trace, Log::Shader, "Vertex Shader src: \n", vertexShader);
-    Log_(Log::Trace, Log::Shader, "Fragment Shader src: \n", fragmentShader);
+    Log_(Log::Trace, Log::Shader, "Vertex Shader src: \n {}", vertexShader);
+    Log_(Log::Trace, Log::Shader, "Fragment Shader src: \n {}", fragmentShader);
     
     unsigned int program = glCreateProgram();
     unsigned int vs = compileShader(GL_VERTEX_SHADER, vertexShader);

@@ -1,7 +1,6 @@
-#ifndef INPUT_EVENT_H
-#define INPUT_EVENT_H
+#pragma once
 
-#include "CoreEngine.h"
+#include "CoreUtility.h"
 #include "Event.h"
 
 class InputEvent : public Event
@@ -25,6 +24,3 @@ class InputEvent : public Event
 
         EventClassType(InputEvent)
 };
-
-
-#endif

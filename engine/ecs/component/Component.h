@@ -1,6 +1,4 @@
-#ifndef COMPONENT_H
-#define COMPONENT_H
-
+#pragma once
 
 class Component
 {
@@ -9,6 +7,3 @@ class Component
         Component()                             = default;        
         bool exists                             = false;
 };
-
-
-#endif

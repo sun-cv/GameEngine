@@ -1,11 +1,10 @@
-#ifndef VERTEX_BUFFER_LAYOUT_H
-#define VERTEX_BUFFER_LAYOUT_H
+#pragma once
 
-#include <glad/glad.h>
-#include <glfw/glfw3.h>
-#include <glm/glm.hpp>
+#include "CoreUtility.h"
 
-#include <vector>
+#include "CoreMath.h"
+#include "RenderGladGLFW.h"
+
 
 struct VertexBufferElement
 {
@@ -68,6 +67,3 @@ class VertexBufferLayout
 
     inline unsigned int getStride() const& { return stride; };
 };
-
-
-#endif

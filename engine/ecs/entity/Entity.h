@@ -1,53 +1,40 @@
-#ifndef ENTITY_H
-#define ENTITY_H
+#pragma once
 
-#include "CoreECS.h"
+#include <cstddef>
+
+#include "ECSValue.h"
 #include "EntityMemoryPool.h"
-
-class EntityMemoryPool;
 
 namespace ECS
 {
-class Entity
-{
-    private:
-        size id;
-    
-    public:
-        Entity(size id) : id(id) {};
-        
-        template<typename component>
-        component & getComponent()
-        {
-            return EntityMemoryPool::Instance().getComponent<component>(id);
-        }
+class Entity {
+private:
+    size id;
 
-        template<typename component>
-        bool hasComponent()
-        {
-            return EntityMemoryPool::Instance().hasComponent<component>(id);
-        }
+public:
+    Entity(size id) : id(id) {}
 
-        size getID()
-        {
-            return id;
-        }
+    template <typename component>
+    component& add() {
+        return EntityMemoryPool::getInstance().template addComponent<component>(id);
+    }
 
-        bool isValid()
-        {
-            return id != INVALID_ENTITY;
-        }
+    template <typename component>
+    component& get() {
+        return EntityMemoryPool::getInstance().template getComponent<component>(id);
+    }
 
-        bool operator == (const Entity& other) const 
-        {
-            return id == other.id;
-        }
+    template <typename component>
+    bool has() {
+        return EntityMemoryPool::getInstance().template hasComponent<component>(id);
+    }
 
-        bool operator != (const Entity& other) const 
-        { 
-            return !(*this == other);
-        }
+    size getID() { return id; }
+
+    bool isValid() { return id != INVALID_ENTITY; }
+
+    bool operator==(const Entity& other) const { return id == other.id; }
+
+    bool operator!=(const Entity& other) const { return !(*this == other); }
 };
 }
-
-#endif

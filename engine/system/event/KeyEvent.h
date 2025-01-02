@@ -1,7 +1,6 @@
-#ifndef KEY_EVENT_H
-#define KEY_EVENT_H
+#pragma once
 
-#include "CoreEngine.h"
+#include "CoreUtility.h"
 #include "Event.h"
 
 
@@ -76,7 +75,3 @@ class KeyTypedEvent : public KeyEvent
 	    	return ss.str();
 	    }
 };
-
-
-
-#endif

@@ -1,7 +1,6 @@
-#ifndef WINDOW_EVENT_H
-#define WINDOW_EVENT_H
+#pragma once
 
-#include "CoreEngine.h"
+#include "CoreUtility.h"
 #include "Event.h"
 
 class WindowEvent : public Event
@@ -29,5 +28,3 @@ class CloseWindow : public WindowEvent
 	    	return ss.str();
 	    }
 };
-
-#endif

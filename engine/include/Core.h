@@ -1,10 +1,11 @@
-#ifndef CORE_H
-#define CORE_H
+#pragma once
 
+#include "CoreUtility.h"
 #include "CoreEngine.h"
 #include "CoreEvent.h"
 #include "CoreECS.h"
-#include "CoreDebug.h"
+#include "CoreToolkit.h"
 #include "CoreRender.h"
-
-#endif
+#include "CoreController.h"
+#include "CoreManager.h"
+#include "CoreTest.h"

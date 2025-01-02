@@ -1,14 +1,13 @@
-#ifndef POSITION_COMPONENT_H
-#define POSITION_COMPONENT_H
+#pragma once
 
 #include "Component.h"
+#include "Vector2.h"
 
 class Position : public Component
 {
     private:
     public:
-        double x                                = 0;
-        double y                                = 0;
-};
+        float x;
+        float y;
 
-#endif
+};

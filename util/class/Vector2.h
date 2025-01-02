@@ -1,5 +1,4 @@
-#ifndef VECTOR_2_H
-#define VECTOR_2_H
+#pragma once
 
 #include <cmath>
 
@@ -86,5 +85,3 @@ class Vector2
             return acosf(ratio);
         }
 };
-
-#endif

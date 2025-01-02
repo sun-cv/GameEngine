@@ -1,14 +1,9 @@
-#ifndef SHADER_H
-#define SHADER_H
+#pragma once
 
-#include <fstream>
+#include "CoreUtility.h"
+#include "CoreMath.h"
 
-#include <glad/glad.h>
-#include <glfw/glfw3.h>
-#include <glm/gtc/type_ptr.hpp>
-
-#include "CoreEngine.h"
-
+#include "RenderGladGLFW.h"
 
 class Shader
 {
@@ -32,8 +27,8 @@ class Shader
         void unbind();
         bool reload();
 
-        inline unsigned int getID() const& { return rendererID; };
-        inline std::string getName()const& { return name; };
+        inline unsigned int getID   ()const& { return rendererID; };
+        inline std::string getName  ()const& { return name; };
 
 
     private:
@@ -73,11 +68,13 @@ class Shader
             glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, &value[0][0]);
         }
 
-        void setUniform(const std::string & name, const float v0, const float v1, const float v2, const float v3)
+        void setUniform(const std::string & name, const glm::vec4& value)
         {
-            glUniform4f(getUniformLocation(name), v0, v1, v2, v3);
+            glUniform4f(getUniformLocation(name), value.w, value.x, value.y, value.z);
         }
 
+        void setTextureUniform(const std::string & name, const unsigned int value)
+        {
+            glUniform1i(getUniformLocation(name), value);
+        }
 };
-
-#endif

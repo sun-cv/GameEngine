@@ -1,0 +1,5 @@
+{
+    "name": "default",
+    "vertexPath": "D:/Projects/Active/GameEngine/engine/system/render/shader/shaders/vertex/default.shader",
+    "fragmentPath": "D:/Projects/Active/GameEngine/engine/system/render/shader/shaders/fragment/default.shader"
+}

@@ -1,10 +1,10 @@
-#ifndef LOG_DEFINITIONS_H
-#define LOG_DEFINITIONS_H
+#pragma once
 
 namespace Log
 {
 
 enum LogLevel {
+    Loop,
     Trace,
     Debug,
     System,
@@ -15,6 +15,7 @@ enum LogLevel {
 
 static const char* levelStrings[] = 
 {
+    "   [Loop]",
     "  [Trace]",
     "  [Debug]",
     " [System]",
@@ -29,14 +30,17 @@ static const char* levelStrings[] =
 enum LogCategory {
     Engine,
     Toolkit,
+    Testbench,
     OpenGL,
-    FileSystem,
+    mFile,
     Event,
     EventDispatcher,
     cWindow,
     cInput,
     sRender,
     Renderer,
+    mMesh,
+    Mesh,
     mMaterial,
     Material,
     mShader,
@@ -44,7 +48,8 @@ enum LogCategory {
     mTexture,
     Texture,
     EMP, 
-    EntityManager,
+    mEntity,
+    bEntity,
 
     Count,
 };
@@ -53,14 +58,17 @@ static const char* categoryStrings[] =
 {
     "Engine",
     "Toolkit",
+    "Testbench",
     "OpenGL",
-    "FileSystem",
+    "FileManager",
     "Event",
     "EventDispatcher",
     "WindowController",
     "InputController",
     "RenderSystem",
     "Renderer",
+    "MeshManager",
+    "Mesh",
     "MaterialManager",
     "Material",
     "ShaderManager",
@@ -69,10 +77,9 @@ static const char* categoryStrings[] =
     "Texture",
     "EntityMemoryPool",
     "EntityManager",
+    "EntityBuilder"
+
     "Count"
 };
 
 }
-
-
-#endif

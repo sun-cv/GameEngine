@@ -1,5 +1,6 @@
 #include "VertexBuffer.h"
 
+#include "RenderGladGLFW.h"
 
 VertexBuffer::VertexBuffer(const void * data, size_t size)
 {
@@ -7,6 +8,7 @@ VertexBuffer::VertexBuffer(const void * data, size_t size)
     glBindBuffer(GL_ARRAY_BUFFER, rendererID);
     glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
 }
+
 
 VertexBuffer::~VertexBuffer()
 {
@@ -16,7 +18,6 @@ VertexBuffer::~VertexBuffer()
 void VertexBuffer::bind() const
 {
     glBindBuffer(GL_ARRAY_BUFFER, rendererID);
-
 }
 
 void VertexBuffer::unbind() const

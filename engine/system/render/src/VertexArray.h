@@ -1,14 +1,8 @@
-#ifndef VERTEX_ARRAY_H
-#define VERTEX_ARRAY_H
+#pragma once
 
-#include <glad/glad.h>
-#include <glfw/glfw3.h>
+#include "CoreUtility.h"
+#include "ForwardRender.h"
 
-#include "VertexBuffer.h"
-#include "VertexBufferLayout.h"
-#include "IndexBuffer.h"
-
-#include "Log.h"
 
 class VertexArray
 {
@@ -29,6 +23,3 @@ class VertexArray
         inline unsigned int getIndexCount() const { return indexCount; };
 
 };
-
-
-#endif

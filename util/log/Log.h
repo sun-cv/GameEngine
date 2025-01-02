@@ -1,5 +1,4 @@
-#ifndef LOG_H
-#define LOG_H
+#pragma once
 
 #include <mutex>
 #include <set>
@@ -107,5 +106,3 @@ class Logger {
 #define Log__(format)                           Log::Logger::getInstance().quicklog(format);
 #define LogLevel(level)                         Log::Logger::getInstance().setLogLevel(level);
 #define LogCategories(...)                      Log::Logger::getInstance().addCategories(__VA_ARGS__)
-
-#endif

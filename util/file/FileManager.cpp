@@ -1,12 +1,15 @@
-
 #include "FileManager.h"
+
+#include <fstream>
+#include <sstream>
+#include <nlohmann/json.hpp>
+
 
 namespace Toolkit
 {
 std::vector<std::string> FileManager::getFiles(const std::string& directory, const std::string& extension)
 {
     std::vector<std::string> files;
-
     try 
     {
         for (const auto& entry : std::filesystem::recursive_directory_iterator(directory)) {
@@ -18,7 +21,7 @@ std::vector<std::string> FileManager::getFiles(const std::string& directory, con
     } 
     catch (const std::filesystem::filesystem_error& error) 
     {
-        Log_(Log::Error, Log::FileSystem, "Failed traversing directory: ", error.what());
+        Log_(Log::Error, Log::mFile, "Failed traversing directory: ", error.what());
     }
     return files;
 }
@@ -28,7 +31,7 @@ nlohmann::json FileManager::loadJson(const std::string& filePath)
     std::ifstream file(filePath);
     if (!file.is_open()) 
     {
-        Log_(Log::Error, Log::FileSystem, "Failed to open file: {}", filePath)
+        Log_(Log::Error, Log::mFile, "Failed to open file: {}", filePath)
         return {};
     }
 

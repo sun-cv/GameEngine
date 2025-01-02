@@ -1,5 +1,0 @@
-{
-    "name": "Projection",
-    "vertexPath": "D:/Projects/Active/GameEngine/engine/system/render/shaderManager/shaders/vertex/projection.shader",
-    "fragmentPath": "D:/Projects/Active/GameEngine/engine/system/render/shaderManager/shaders/fragment/projection.shader"
-}

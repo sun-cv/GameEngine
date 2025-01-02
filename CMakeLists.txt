@@ -20,15 +20,18 @@ set(INCLUDE_DIRECTORIES
     ${CMAKE_SOURCE_DIR}/engine/ecs
     ${CMAKE_SOURCE_DIR}/engine/ecs/component
     ${CMAKE_SOURCE_DIR}/engine/ecs/entity
+    ${CMAKE_SOURCE_DIR}/engine/ecs/entity/factory
     ${CMAKE_SOURCE_DIR}/engine/include
+    ${CMAKE_SOURCE_DIR}/engine/include/forward
     ${CMAKE_SOURCE_DIR}/engine/system
     ${CMAKE_SOURCE_DIR}/engine/system/asset
-    ${CMAKE_SOURCE_DIR}/engine/system/asset/materialManager
-    ${CMAKE_SOURCE_DIR}/engine/system/asset/textureManager
-    ${CMAKE_SOURCE_DIR}/engine/system/asset/textureManager/texture
+    ${CMAKE_SOURCE_DIR}/engine/system/asset/material
+    ${CMAKE_SOURCE_DIR}/engine/system/asset/mesh
+    ${CMAKE_SOURCE_DIR}/engine/system/asset/texture
     ${CMAKE_SOURCE_DIR}/engine/system/event
     ${CMAKE_SOURCE_DIR}/engine/system/render
-    ${CMAKE_SOURCE_DIR}/engine/system/render/shaderManager
+    ${CMAKE_SOURCE_DIR}/engine/system/render/renderer
+    ${CMAKE_SOURCE_DIR}/engine/system/render/shader
     ${CMAKE_SOURCE_DIR}/engine/system/render/src
     ${CMAKE_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/libs

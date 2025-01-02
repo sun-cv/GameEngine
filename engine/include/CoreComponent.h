@@ -1,11 +1,10 @@
-#ifndef CORE_COMPONENT_H
-#define CORE_COMPONENT_H
+#pragma once
 
+#include "Component.h"
 #include "Enemy.h"
 #include "Lifespan.h"
 #include "Player.h"
 #include "Position.h"
 #include "Render.h"
+#include "Title.h"
 #include "Velocity.h"
-
-#endif
