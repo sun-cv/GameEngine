@@ -11,6 +11,7 @@ class ShaderManager
         std::unordered_map<std::string, std::shared_ptr<Shader>> shaderRegistry;
 
         void cacheShaders();
+        void loadShaderData(std::string name, std::string filepath);
 
     public:
         ShaderManager();

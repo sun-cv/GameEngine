@@ -18,20 +18,21 @@ std::vector<std::string> FileManager::getFiles(const std::string& directory, con
                 files.push_back(entry.path().string());
             }
         }
+    return files;
     } 
     catch (const std::filesystem::filesystem_error& error) 
     {
-        Log_(Log::Error, Log::mFile, "Failed traversing directory: ", error.what());
+        Throw_(Error::runtime, "Failed traversing directory: {} | Exception:\n {}", directory, error.what())
     }
-    return files;
+
 }
 
-nlohmann::json FileManager::loadJson(const std::string& filePath)
+nlohmann::json FileManager::loadJson(const std::string& filepath)
 {
-    std::ifstream file(filePath);
+    std::ifstream file(filepath);
     if (!file.is_open()) 
     {
-        Log_(Log::Error, Log::mFile, "Failed to open file: {}", filePath)
+        Throw_(Error::runtime, "Failed to open file: {}", filepath)
         return {};
     }
 

@@ -99,9 +99,9 @@ class Logger {
                 log(Log::System, Log::Engine, "Active log categories: " + ss.str());
             }
         }
-
 };
 }
+
 #define Log_(level, category, format, ...)      Log::Logger::getInstance().log(level, category, format, __VA_ARGS__);
 #define Log__(format)                           Log::Logger::getInstance().quicklog(format);
 #define LogLevel(level)                         Log::Logger::getInstance().setLogLevel(level);

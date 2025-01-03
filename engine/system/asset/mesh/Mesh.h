@@ -17,9 +17,9 @@ class Mesh : public Component
         std::vector<unsigned int>               indices;
         VertexBufferLayout                      layout;
 
-        
     public:
         unsigned int                            ID = 0;
+        std::string                             name;
         
         float                                   width;
         float                                   height;

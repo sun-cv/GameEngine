@@ -24,9 +24,6 @@ static const char* levelStrings[] =
     "  [Fatal]"
 };
  
-
-
-
 enum LogCategory {
     Engine,
     Toolkit,

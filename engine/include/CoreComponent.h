@@ -7,4 +7,5 @@
 #include "Position.h"
 #include "Render.h"
 #include "Title.h"
+#include "Transform.h"
 #include "Velocity.h"

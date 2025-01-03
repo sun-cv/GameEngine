@@ -55,6 +55,7 @@ void Testbench::registerTests()
     menu->registerTest<TestMesh>("Mesh rendering");
     menu->registerTest<TestMeshMaterial>("Mesh & Material rendering");
     menu->registerTest<TestECSComponents>("ECS Component builder");
+    menu->registerTest<TestInstancedRender>("Instanced rendering");
 }
 
 void Testbench::registerImGui()

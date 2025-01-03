@@ -14,9 +14,10 @@ class EntityMemoryPool
 
         VectorTuple pool;
         
+        // std::unordered_map<std::string, size_t> tags;    
         size_t                                  totalEntities;
-        std::vector<std::string>                tags;    
         std::vector<bool>                       active;
+        std::vector<bool>                       dirty;
 
         void initializeEntity       (size_t entityID, const std::string& tag);
         size_t getNextEntityIndex   ();
@@ -88,10 +89,20 @@ class EntityMemoryPool
             return component.exists;
         };
 
-        const std::string& getTag(size_t entityID)
+        // const std::string& getTagEntities(std::string tag)
+        // {
+        //     return tags[tag];
+        // };
+
+        const bool getDirty(size_t entityID)
         {
-            return tags[entityID];
-        };
+            return dirty[entityID];
+        }
+
+        void setDirty(size_t entityID, bool value)
+        {
+            dirty[entityID] = value;
+        }
 };
 }
 #define MemoryPool_()               EntityMemoryPool::getInstance()

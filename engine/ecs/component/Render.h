@@ -11,7 +11,9 @@ class Render : public Component
     public:
         bool state                              = true;
 
-        std::shared_ptr<Mesh>                   mesh;
-        std::shared_ptr<Material>               material;
+        std::string mesh                        = "";
+        std::string material                    = "";
+
+        unsigned int layer                      = 0;
 
 };

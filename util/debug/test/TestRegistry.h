@@ -6,3 +6,4 @@
 #include "test/TestMesh.h"
 #include "test/TestMeshMaterial.h"
 #include "test/TestECSComponents.h"
+#include "test/TestInstancedRender.h"

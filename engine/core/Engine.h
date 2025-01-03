@@ -8,8 +8,8 @@ class Engine
         std::shared_ptr<WindowController>       windowController;
         std::shared_ptr<InputController>        inputController;
 
-        std::shared_ptr<TextureManager>         textureManager;
         std::shared_ptr<ShaderManager>          shaderManager;
+        std::shared_ptr<TextureManager>         textureManager;
         std::shared_ptr<MaterialManager>        materialManager;
         std::shared_ptr<MeshManager>            meshManager;
 

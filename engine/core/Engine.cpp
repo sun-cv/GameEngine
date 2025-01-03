@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Engine.h"
 
 Engine::Engine()
@@ -25,15 +27,15 @@ void Engine::construct()
     }
 
     meshManager                                 = std::make_shared<MeshManager>();
-    textureManager                              = std::make_shared<TextureManager>();
     shaderManager                               = std::make_shared<ShaderManager>();
+    textureManager                              = std::make_shared<TextureManager>();
     materialManager                             = std::make_shared<MaterialManager>(shaderManager, textureManager);
 
     entityManager                               = std::make_shared<ECS::EntityManager>();
     builder                                     = std::make_shared<ECS::EntityBuilder>(entityManager, meshManager, materialManager);
 
     renderer                                    = std::make_shared<Renderer>();
-    renderSystem                                = std::make_shared<RenderSystem>(renderer, entityManager);
+    renderSystem                                = std::make_shared<RenderSystem>(renderer, entityManager, meshManager, materialManager);
     
     testbench                                   = std::make_shared<Toolkit::Testbench>(windowController->getWindow());
 

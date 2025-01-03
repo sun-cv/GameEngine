@@ -1,6 +1,6 @@
 #include "Mesh.h"
 
-Mesh::Mesh(const std::string& name, const std::vector<float>& vertices, const std::vector<unsigned int>& indices, VertexBufferLayout& layout) : vertices(vertices), indices(indices), layout(layout)
+Mesh::Mesh(const std::string& name, const std::vector<float>& vertices, const std::vector<unsigned int>& indices, VertexBufferLayout& layout) : name(name), vertices(vertices), indices(indices), layout(layout)
 {
     VAO = std::make_unique<VertexArray>();
 
@@ -13,8 +13,6 @@ Mesh::Mesh(const std::string& name, const std::vector<float>& vertices, const st
     VAO->unbind();
     VBO->unbind();
     IBO->unbind();
-
-    Log_(Log::System, Log::Mesh, "Loading mesh: {}", name);
 
     float minX = std::numeric_limits<float>::max();
     float maxX = std::numeric_limits<float>::lowest();

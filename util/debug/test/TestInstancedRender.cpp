@@ -1,14 +1,9 @@
-#include "TestECSComponents.h"
-
-#include "CoreComponent.h"
-#include "RenderGladGLFW.h"
-
-#include "CoreUtility.h"
+#include "TestInstancedRender.h"
 
 
 namespace Toolkit
 {
-TestECSComponents::TestECSComponents() : translationA(0, 0, 0), translationB(0, 0, 0)
+TestInstancedRender::TestInstancedRender() : translationA(0, 0, 0), translationB(0, 0, 0)
 {
 
     meshManager     = std::make_shared<MeshManager>();
@@ -25,13 +20,13 @@ TestECSComponents::TestECSComponents() : translationA(0, 0, 0), translationB(0, 
     generateEntity();
 }
 
-TestECSComponents::~TestECSComponents()
+TestInstancedRender::~TestInstancedRender()
 {
 
 }
 
 
-void TestECSComponents::generateEntity()
+void TestInstancedRender::generateEntity()
 {
     
     entity = builder->create("test")
@@ -53,11 +48,11 @@ void TestECSComponents::generateEntity()
    mesh->instanceBuffer(instanceTransforms);
 }
 
-void TestECSComponents::onUpdate(float deltaTime)
+void TestInstancedRender::onUpdate(float deltaTime)
 {
 }
 
-void TestECSComponents::onRender()
+void TestInstancedRender::onRender()
 {
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -94,7 +89,7 @@ void TestECSComponents::onRender()
 
 }
 
-void TestECSComponents::onImGuiRender()
+void TestInstancedRender::onImGuiRender()
 {
     ImGui::PushItemWidth(150.0f);
     ImGui::SliderFloat("A.X", &translationA.x, 0.0f, 1180.0f);

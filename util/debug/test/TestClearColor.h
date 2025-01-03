@@ -19,3 +19,5 @@ class TestClearColor : public Test
 
 };
 }
+
+

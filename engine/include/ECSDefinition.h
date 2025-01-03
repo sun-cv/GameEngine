@@ -5,8 +5,8 @@
 
 #include "Vector2.h"
 
-
 #include "CoreComponent.h"
+
 namespace ECS
 {
     using size = size_t;
@@ -18,6 +18,7 @@ namespace ECS
         std::vector<Position>,
         std::vector<Render>,
         std::vector<Title>,
+        std::vector<Transform>,
         std::vector<Velocity>
     > VectorTuple;
 }

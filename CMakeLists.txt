@@ -46,8 +46,11 @@ set(INCLUDE_DIRECTORIES
     ${CMAKE_SOURCE_DIR}/util/class
     ${CMAKE_SOURCE_DIR}/util/debug
     ${CMAKE_SOURCE_DIR}/util/debug/test
-    ${CMAKE_SOURCE_DIR}/util/file
+    ${CMAKE_SOURCE_DIR}/util/error
     ${CMAKE_SOURCE_DIR}/util/log
+    ${CMAKE_SOURCE_DIR}/util/toolkit
+    ${CMAKE_SOURCE_DIR}/util/toolkit/file
+
     ${CMAKE_SOURCE_DIR}
 )
 

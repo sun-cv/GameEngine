@@ -65,14 +65,8 @@ EntityBuilder& EntityBuilder::render(std::string mesh, std::string material)
     if (entity)
     { 
         auto& render = entity->add<Render>();
-        render.mesh = meshManager->getMesh(mesh);
-
-        auto& vertices = render.mesh->getVertices();
-
-            for (size_t i = 0; i < vertices.size(); i += 4) {
-        std::cout << "(" << vertices[i] << ", " << vertices[i + 1] << ")" << std::endl;
-    }
-        render.material = materialManager->getMaterial(material);
+        render.mesh     = mesh;
+        render.material = material;
     }
     return *this;
 }

@@ -15,18 +15,26 @@ public:
     Entity(size id) : id(id) {}
 
     template <typename component>
-    component& add() {
+    component& add()
+    {
         return EntityMemoryPool::getInstance().template addComponent<component>(id);
     }
 
     template <typename component>
-    component& get() {
+    component& get()
+    {
         return EntityMemoryPool::getInstance().template getComponent<component>(id);
     }
 
     template <typename component>
-    bool has() {
+    bool has()
+    {
         return EntityMemoryPool::getInstance().template hasComponent<component>(id);
+    }
+
+    bool dirty()
+    {
+        return EntityMemoryPool::getInstance().getDirty(id);
     }
 
     size getID() { return id; }

@@ -47,56 +47,63 @@ unsigned int Shader::compileShader(unsigned int type, const std::string& src)
 
 unsigned int Shader::createShader(const std::string& vertexFilepath, const std::string& fragmentFilepath)
 {
-    Log_(Log::Debug, Log::Shader, "Loading shader: {}", name);
+    try
+    {    
+        Log_(Log::Debug, Log::Shader, "Loading shader: {}", name);
 
-    std::string vertexShader   = parseShader(vertexFilepath);
-    std::string fragmentShader = parseShader(fragmentFilepath);
+        std::string vertexShader   = parseShader(vertexFilepath);
+        std::string fragmentShader = parseShader(fragmentFilepath);
 
-    Log_(Log::Trace, Log::Shader, "Vertex Shader src: \n {}", vertexShader);
-    Log_(Log::Trace, Log::Shader, "Fragment Shader src: \n {}", fragmentShader);
-    
-    unsigned int program = glCreateProgram();
-    unsigned int vs = compileShader(GL_VERTEX_SHADER, vertexShader);
-    unsigned int fs = compileShader(GL_FRAGMENT_SHADER, fragmentShader);
+        Log_(Log::Trace, Log::Shader, "Vertex Shader src: \n {}", vertexShader);
+        Log_(Log::Trace, Log::Shader, "Fragment Shader src: \n {}", fragmentShader);
 
-    checkCompileErrors(vs, "VERTEX");
-    checkCompileErrors(fs, "FRAGMENT");
-    
-    if (vs == 0 || fs == 0) 
-    { 
-        Log_(Log::Error, Log::Shader, "Shader compilation failed");
-        return 0; 
+        unsigned int program = glCreateProgram();
+        unsigned int vs = compileShader(GL_VERTEX_SHADER, vertexShader);
+        unsigned int fs = compileShader(GL_FRAGMENT_SHADER, fragmentShader);
+
+        checkCompileErrors(vs, "VERTEX");
+        checkCompileErrors(fs, "FRAGMENT");
+
+        glAttachShader(program, vs);
+        glAttachShader(program, fs);
+        glLinkProgram(program);
+        checkCompileErrors(program, "PROGRAM");
+
+        glDeleteShader(vs);
+        glDeleteShader(fs);
+
+        return program;
     }
-
-    glAttachShader(program, vs);
-    glAttachShader(program, fs);
-    glLinkProgram(program);
-    checkCompileErrors(program, "PROGRAM");
-
-    glDeleteShader(vs);
-    glDeleteShader(fs);
-
-    return program;
+    catch(...)
+    {
+        throw;
+    }
 }
 
 void Shader::checkCompileErrors(unsigned int shader, const std::string& type) {
-    GLint success;
+    GLint  success;
     GLchar infoLog[1024];
 
-    if (type == "PROGRAM") {
+    if (type == "PROGRAM")
+    {
         glGetProgramiv(shader, GL_LINK_STATUS, &success);
-        if (!success) {
+        if (!success)
+        {
             glGetProgramInfoLog(shader, 1024, nullptr, infoLog);
-            Log_(Log::Error, Log::Shader, "Linking error of type: {} | info log: {}", type, infoLog)
+            Throw_(Error::runtime, "Shader linking error of type {} | infoLog: {}", type, infoLog);
         }
-    } else {
+    }
+    else
+    {
         glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-        if (!success) {
+        if (!success)
+        {
             glGetShaderInfoLog(shader, 1024, nullptr, infoLog);
-            Log_(Log::Error, Log::Shader, "Compilation error of type: {} | info log: {}", type, infoLog)
+            Throw_(Error::runtime, "Shader compilation error of type {} | infoLog: {}", type, infoLog);
         }
     }
 }
+
 
 void Shader::bind() const
 {
@@ -121,9 +128,9 @@ bool Shader::reload()
         Log_(Log::System, Log::Shader, "Reloaded shader {} successfully", name);
         return true;
     }
-    catch(const std::exception& error)
+    catch(Exceptions)
     {
-        Log_(Log::Error, Log::Shader, "Reload failed (file or path missing): {}", error.what());
+        Log_(Log::Error, Log::Shader, "Reload failed (file or path missing):\n{}", error.what());
         return false;
     }
 }

@@ -8,7 +8,8 @@ EntityMemoryPool::EntityMemoryPool()
 
     initializeComponents<0, ComponentCount>     (pool);
     initializeVector<bool>                      (active);
-    initializeVector<std::string>               (tags);
+    initializeVector<bool>                      (dirty);
+    // initializeVector<std::string>               (tags);
 
     Log_(Log::System, Log::EMP, "Initialized successfully!");
 }   
@@ -36,7 +37,7 @@ EntityMemoryPool & EntityMemoryPool::getInstance()
 
 size_t EntityMemoryPool::allocateEntity(const std::string& tag)
 {   
-    size_t availableID= getNextEntityIndex();
+    size_t availableID = getNextEntityIndex();
     if (availableID == INVALID_ENTITY)
     {
         return INVALID_ENTITY;
@@ -53,16 +54,18 @@ void EntityMemoryPool::deallocateEntity(size_t entityID)
 
 void EntityMemoryPool::initializeEntity(size_t entityID, const std::string& tag)
 {
-    resetComponent<Enemy>   (pool, entityID);
-    resetComponent<Lifespan>(pool, entityID);
-    resetComponent<Player>  (pool, entityID);
-    resetComponent<Position>(pool, entityID);
-    resetComponent<Render>  (pool, entityID);
-    resetComponent<Title>   (pool, entityID);
-    resetComponent<Velocity>(pool, entityID);
+    resetComponent<Enemy>       (pool, entityID);
+    resetComponent<Lifespan>    (pool, entityID);
+    resetComponent<Player>      (pool, entityID);
+    resetComponent<Position>    (pool, entityID);
+    resetComponent<Render>      (pool, entityID);
+    resetComponent<Title>       (pool, entityID);
+    resetComponent<Transform>   (pool, entityID);
+    resetComponent<Velocity>    (pool, entityID);
 
     active[entityID] = true;
-    tags[entityID] = tag;
+    dirty[entityID] = true;
+    // tags[tag] = entityID;
 
     Log_(Log::Debug, Log::EMP, "Instantiated entity with id {}", entityID);
 }

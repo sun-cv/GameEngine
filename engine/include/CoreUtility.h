@@ -10,3 +10,4 @@
 #include <optional>
 
 #include "Log.h"
+#include "Error.h"
