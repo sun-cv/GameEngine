@@ -19,7 +19,7 @@
 
 namespace Toolkit 
 {
-class TestInstancedRender : public Test
+class TestInstancedRenderBatch : public Test
 {
     private:
 
@@ -52,8 +52,8 @@ class TestInstancedRender : public Test
         bool ytoggle2;
     
     public:
-        TestInstancedRender();
-        ~TestInstancedRender();
+        TestInstancedRenderBatch();
+        ~TestInstancedRenderBatch();
 
         void generateEntity();
 

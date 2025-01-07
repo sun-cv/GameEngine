@@ -6,19 +6,29 @@
 #include "Texture.h"
 
 class TextureManager
-{
+{   // Variables
     private:
-        std::string textureDirectory = "D:/Projects/Active/GameEngine/assets/texture";
-        std::unordered_map<std::string, std::shared_ptr<Texture>> textureRegistry;
+        std::string textureDirectory            = "D:/Projects/Active/GameEngine/assets/texture";
+        
+        std::unordered_map<
+            std::string,
+            std::shared_ptr<Texture>
+        >                                       textureRegistry;
 
+    // Functions
+    private: // Initialization
         void cacheTextures();
+
+    public: 
+        std::shared_ptr<Texture> loadTexture(const std::string& name, const std::string& filepath);
+        std::shared_ptr<Texture> getTexture (const std::string& name) const;    
+           // Release 
+        void removeTexture(const std::string& name);
+        void clear();
 
     public:
         TextureManager();
+       ~TextureManager();
 
-        std::shared_ptr<Texture> loadTexture(const std::string& name, const std::string& filepath);
-        std::shared_ptr<Texture> getTexture (const std::string& name) const;    
 
-        void removeTexture(const std::string& name);
-        void clear();
 };

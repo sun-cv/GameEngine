@@ -66,9 +66,9 @@ void Mesh::instanceBuffer(const std::vector<glm::mat4>& instanceTransforms)
 
     for (int i = 0; i < 4; i++)
     {
-        glEnableVertexAttribArray(3 + i);
-        glVertexAttribPointer    (3 + i, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (const void*)(sizeof(glm::vec4) * i));
-        glVertexAttribDivisor    (3 + i, 1);
+        glEnableVertexAttribArray(2 + i);
+        glVertexAttribPointer    (2 + i, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (const void*)(sizeof(glm::vec4) * i));
+        glVertexAttribDivisor    (2 + i, 1);
     }
     
     VAO->unbind();

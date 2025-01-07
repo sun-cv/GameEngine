@@ -2,7 +2,8 @@
 
 #include <string>
 #include "Component.h"
-
+namespace ECS
+{
 class Title : public Component
 {
     private:
@@ -10,3 +11,4 @@ class Title : public Component
         std::string name                        = "";
 
 };
+}

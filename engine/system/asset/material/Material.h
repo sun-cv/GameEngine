@@ -6,7 +6,7 @@
 #include "Texture.h"
 #include "Shader.h"
 
-class Material : public Component
+class Material
 {
     private:
         std::shared_ptr<Shader>                         shader;
@@ -36,7 +36,7 @@ class Material : public Component
         {
             if (!shader)
             {
-                Log_(Log::Error, Log::mMaterial, "Shader not set! Cannot apply uniforms");
+                Log(Log::Error, Log::mMaterial, "Shader not set! Cannot apply uniforms");
                 return;
             }
             for (const auto& [name, value] : intUniforms)   shader->setUniform(name, value);

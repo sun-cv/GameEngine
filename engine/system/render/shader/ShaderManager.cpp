@@ -8,10 +8,23 @@
 
 ShaderManager::ShaderManager()
 {
-    Log_(Log::System, Log::mShader, "initializing..");
-    cacheShaders();
-    Log_(Log::System, Log::mShader, "Initialized successfully!");
+    LogStartup(Log::mShader);
+    try
+    {
+        cacheShaders();
+    }
+    catch(Exceptions)
+    {
+        LogFailure(Log::mShader, error)
+    }
+    LogSuccess(Log::mShader);
 }
+
+ShaderManager::~ShaderManager()
+{
+    LogPowerDown(Log::mShader);
+}
+
 
 void ShaderManager::cacheShaders()
 {
@@ -27,32 +40,25 @@ void ShaderManager::cacheShaders()
     }
     catch(Exceptions)
     {
-        Log_(Log::Error, Log::mShader, error.what())
+        Log(Log::Error, Log::mShader, error.what())
     }
 }
 
+    // Throw
 void ShaderManager::loadShaderData(std::string name, std::string filepath)
 {
-    try
+    auto data = Toolkit::FileManager::loadJson(filepath);
+    if (!data.empty())
     {
-        auto data = Toolkit::FileManager::loadJson(filepath);
-        if (!data.empty())
-        {
-            loadShader(data["name"], data["vertexPath"], data["fragmentPath"]);
-            Log_(Log::Trace, Log::mShader, "Caching {} shader from path: \n         ::[Vertex] {} \n         ::[Fragment] {}", name, data["vertexPath"], data["fragmentPath"]);
-        }
-    }
-    catch(...)
-    {
-        throw;
+        loadShader(data["name"], data["vertexPath"], data["fragmentPath"]);
+        Log(Log::Trace, Log::mShader, "Caching {} shader from path: \n         ::[Vertex] {} \n         ::[Fragment] {}", name, data["vertexPath"], data["fragmentPath"]);
     }
 }
-
 
 
 std::shared_ptr<Shader> ShaderManager::loadShader(const std::string& name, const std::string& vertexPath, const std::string& fragmentPath)
 {
-    Log_(Log::Debug, Log::Shader, "Loading shader: {}", name);
+    Log(Log::Debug, Log::Shader, "Loading shader: {}", name);
 
     auto iterator = shaderRegistry.find(name);
     if (iterator != shaderRegistry.end())
@@ -70,11 +76,11 @@ std::shared_ptr<Shader> ShaderManager::loadShader(const std::string& name, const
     }
     catch(Exceptions)
     {
-        Log_(Log::Error, Log::mShader, "Failed to load shader {} from \nVertex: {} \nFragment: {}\n exception: {}", name, vertexPath, fragmentPath, error.what());
+        Log(Log::Error, Log::mShader, "Failed to load shader {} from \nVertex: {} \nFragment: {}\n exception: {}", name, vertexPath, fragmentPath, error.what());
 
         if (shaderRegistry.find("default") != shaderRegistry.end())
         {
-            Throw_(Error::runtime, "Default Shader is missing!");
+            Throw(Error::runtime, "Default Shader is missing!");
         }
         return shaderRegistry["default"];
     }
@@ -89,12 +95,12 @@ std::shared_ptr<Shader> ShaderManager::getShader(const std::string& name) const
         return iterator->second;
     }
 
-    Log_(Log::Warning, Log::mShader, "Shader {} not found. Falling back to default shader");
+    Log(Log::Warning, Log::mShader, "Shader {} not found. Falling back to default shader");
 
     auto defaultIterator = shaderRegistry.find("default");
     if (defaultIterator == shaderRegistry.end()) 
     {
-        Throw_(Error::runtime, "Default Shader is missing!");
+        Throw(Error::runtime, "Default Shader is missing!");
     }
     return defaultIterator->second;
 }
@@ -104,16 +110,16 @@ void ShaderManager::removeShader(std::string& name)
     auto iterator = shaderRegistry.find(name);
     if (iterator == shaderRegistry.end())
     {
-        Log_(Log::Warning, Log::mShader, "Cannot remove shader {} (not found)", name);
+        Log(Log::Warning, Log::mShader, "Cannot remove shader {} (not found)", name);
     }
 
-    Log_(Log::Debug, Log::mShader, "Removed shader: {}", name);
+    Log(Log::Debug, Log::mShader, "Removed shader: {}", name);
     shaderRegistry.erase(iterator);
 }
 
 void ShaderManager::clear()
 {
     shaderRegistry.clear();
-    Log_(Log::System, Log::mShader, "All shaders cleared");
+    Log(Log::System, Log::mShader, "All shaders cleared");
 }
 

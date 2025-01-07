@@ -3,18 +3,23 @@
 
 namespace Toolkit
 {
-TestInstancedRender::TestInstancedRender() : translationA(0, 0, 0), translationB(0, 0, 0)
+TestInstancedRender::TestInstancedRender()
 {
+
 
     meshManager     = std::make_shared<MeshManager>();
     shaderManager   = std::make_shared<ShaderManager>();
     textureManager  = std::make_shared<TextureManager>();
     materialManager = std::make_shared<MaterialManager>(shaderManager, textureManager);
 
-    entityManager   = std::make_shared<ECS::EntityManager>();
-    builder         = std::make_shared<ECS::EntityBuilder>(entityManager, meshManager, materialManager);
+    entityMemoryPool= std::make_shared<ECS::EntityMemoryPool>();
+    entityManager   = std::make_shared<ECS::EntityManager>(entityMemoryPool);
+    componentManager= std::make_shared<ECS::ComponentManager>(entityMemoryPool);
+    builder         = std::make_shared<ECS::EntityBuilder>(entityManager, componentManager);
 
-    projection      = glm::ortho(0.0f, 1280.0f, 0.0f, 720.0f, -1.0f, 1.0f);
+    renderer        = std::make_shared<Renderer>();
+    renderSystem    = std::make_shared<RenderSystem>(renderer, entityManager, componentManager, meshManager, materialManager);
+    
     view            = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
 
     generateEntity();
@@ -29,73 +34,94 @@ TestInstancedRender::~TestInstancedRender()
 void TestInstancedRender::generateEntity()
 {
     
-    entity = builder->create("test")
+    entity = builder->create()
         .player(true)
         .lifespan(100)
         .position({0,0})
         .velocity({0.1f,0.1f})
-        .render("large_default", "instance_default")
+        .transform()
+        .render("large_default", "instance_default", 1)
         .complete();
 
-        auto& render = entity->get<Render>();
-        std::shared_ptr<Mesh> mesh = meshManager->getMesh(render.material);
-        auto& vertices = mesh->getVertices();
 
-    std::vector<glm::mat4> instanceTransforms(2);
-    instanceTransforms[0] = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-    instanceTransforms[1] = glm::translate(glm::mat4(1.0f), glm::vec3(100.0f, 100.0f, 0.0f));
-   
-   mesh->instanceBuffer(instanceTransforms);
+    entity2 = builder->create()
+        .player(true)
+        .lifespan(100)
+        .position({0, 0})
+        .velocity({0.1f,0.1f})
+        .render("default", "instance_default", 0)
+        .complete();
 }
 
 void TestInstancedRender::onUpdate(float deltaTime)
 {
+    renderSystem->update();
+}
+
+void logMat4(const glm::mat4& matrix) {
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            std::cout << matrix[i][j] << ' ';
+        }
+        std::cout << '\n';
+    }
 }
 
 void TestInstancedRender::onRender()
 {
-
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // Renderer renderer;
-
     {
+        rotation += glm::radians(0.1f);
 
-        // rotation += glm::radians(0.1f);
+        auto& position   = componentManager->edit<ECS::Position>(entity);
+        auto& position2  = componentManager->edit<ECS::Position>(entity2);
 
-        // auto& render   = entity->get<Render>();
-        // auto& position = entity->get<Position>();
-        // auto& velocity = entity->get<Velocity>();
+        auto& velocity   = componentManager->edit<ECS::Velocity>(entity);
+        auto& velocity2  = componentManager->edit<ECS::Velocity>(entity2);
 
-        // if (xtoggle) position.x += velocity.x;
-        // if (!xtoggle) position.x -= velocity.x;
+        auto& transform  = componentManager->edit<ECS::Transform>(entity);
+        auto& transform2 = componentManager->edit<ECS::Transform>(entity2);
 
-        // if (ytoggle) position.y += velocity.y;
-        // if (!ytoggle) position.y -= velocity.y;
+        auto mesh  = meshManager->getMesh(componentManager->get<ECS::Render>(entity).mesh);
+        auto mesh2 = meshManager->getMesh(componentManager->get<ECS::Render>(entity2).mesh);
 
-        // if (position.x > 1280 - mesh->width) xtoggle = false;
-        // if (position.x < 0) xtoggle = true;
- 
-        // if (position.y > 720 - mesh->height) ytoggle = false;
-        // if (position.y < 0) ytoggle = true;
 
-        // glm::mat4 model         = glm::translate(glm::mat4(1.0f),{position.x + render.mesh->width / 2, position.y + render.mesh->height / 2, 0 });
-        // model                   = glm::rotate(model, rotation, glm::vec3(0.0f, 0.0f, 1.0f));
-        // glm::mat4 mvp           = projection * view * model;
-        // render.material->setUniform("MVP", mvp);
-        // renderer.drawInstance(render.material, render.mesh, instanceCount);
+        if (xtoggle)   position.x  += velocity.x;
+        if (!xtoggle)  position.x  -= velocity.x;
+        if (ytoggle)   position.y  += velocity.y;
+        if (!ytoggle)  position.y  -= velocity.y;
+
+        if (xtoggle2)  position2.x  += velocity2.x;
+        if (!xtoggle2) position2.x  -= velocity2.x;
+        if (ytoggle2)  position2.y  += velocity2.y;
+        if (!ytoggle2) position2.y  -= velocity2.y;
+
+        if (position.x > 1280 - mesh->width) xtoggle = false;
+        if (position.x < 0) xtoggle = true;
+        if (position.y > 720 - mesh->height) ytoggle = false;
+        if (position.y < 0) ytoggle = true;
+
+        if (position2.x > 1280 - mesh2->width) xtoggle2 = false;
+        if (position2.x < 0) xtoggle2 = true;
+        if (position2.y > 720 - mesh2->height) ytoggle2 = false;
+        if (position2.y < 0) ytoggle2 = true;
+        
+        transform.reset();
+        transform2.reset();
+
+        transform.modelMatrix = glm::translate(transform.modelMatrix, glm::vec3(position.x + mesh->width / 2, position.y + mesh->height / 2, 0));
+        transform2.modelMatrix = glm::translate(transform2.modelMatrix, glm::vec3(position2.x + mesh2->width / 2, position2.y + mesh2->height / 2, 0));
+
+        renderSystem->render();
     }
-
 }
+
 
 void TestInstancedRender::onImGuiRender()
 {
     ImGui::PushItemWidth(150.0f);
-    ImGui::SliderFloat("A.X", &translationA.x, 0.0f, 1180.0f);
-    ImGui::SameLine();
-    ImGui::SliderFloat("A.Y", &translationA.y, 0.0f, 620.0f);
-    ImGui::PopItemWidth();
     ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 }
 }

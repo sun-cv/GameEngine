@@ -1,9 +1,11 @@
 #pragma once
 
 #include "CoreUtility.h"
-#include "ForwardRender.h"
-
 #include "CoreMath.h"
+
+#include "ECSDefinition.h"
+
+#include "ForwardRender.h"
 
 class Renderer
 {
@@ -12,6 +14,6 @@ class Renderer
     public:
 
         void draw(std::shared_ptr<Material> material, std::shared_ptr<Mesh> mesh) const;
-        void drawInstance(std::shared_ptr<Material> material, std::shared_ptr<Mesh> mesh, unsigned int instanceCount) const;
+        void drawInstance(std::shared_ptr<Mesh> mesh, std::shared_ptr<Material> material, ECS::Entity instanceCount) const;
         void clear(glm::vec4 clearColor) const;
 };

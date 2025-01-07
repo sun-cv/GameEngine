@@ -33,10 +33,10 @@ void TestMenu::onImGuiRender()
 
 Testbench::Testbench(GLFWwindow* window) : window(window)
 {
-    Log_(Log::System, Log::Testbench, "Initializing..");
+    Log(Log::System, Log::Testbench, "Initializing..");
     registerTests();
     registerImGui();
-    Log_(Log::System, Log::Testbench, "Initialized successfully!");
+    Log(Log::System, Log::Testbench, "Initialized successfully!");
 }
 
 Testbench::~Testbench()
@@ -56,6 +56,7 @@ void Testbench::registerTests()
     menu->registerTest<TestMeshMaterial>("Mesh & Material rendering");
     menu->registerTest<TestECSComponents>("ECS Component builder");
     menu->registerTest<TestInstancedRender>("Instanced rendering");
+    menu->registerTest<TestInstancedRenderBatch>("larger volume of entities");
 }
 
 void Testbench::registerImGui()
@@ -97,6 +98,6 @@ void Testbench::shutdown()
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-    Log_(Log::System, Log::Testbench, "Powering down..")
+    Log(Log::System, Log::Testbench, "Powering down..")
 }
 }

@@ -5,7 +5,7 @@
 #include "RenderGladGLFW.h"
 
 class WindowController
-{
+{   // Variables
     private:
         const char *title                       = "Game Engine";
         GLFWwindow *window;
@@ -14,17 +14,19 @@ class WindowController
         int width                               = 1280;
         int height                              = 720; 
 
+    // Functions
     private:
         static void framebuffer_size_callback   (GLFWwindow* window, int width, int height);
         static void window_size_callback        (GLFWwindow* window, int width, int height);
         static void window_refresh_callback     (GLFWwindow* window);
-        
+            
+            // Close window listener
         void registerListeners();
         void closeWindow                        (Event& event);
 
     public:
         WindowController();
-        ~WindowController();
+       ~WindowController();
 
         void initialize();
         bool active();

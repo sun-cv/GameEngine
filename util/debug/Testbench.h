@@ -37,7 +37,7 @@ class TestMenu : public Test
         template <typename test>
         void registerTest(const std::string& name)
         {
-            Log_(Log::Debug, Log::Toolkit, "Registering test {}", name);
+            Log(Log::Debug, Log::Toolkit, "Registering test {}", name);
             tests.push_back(std::make_pair(name, [](){ return new test(); }));
         }
 };

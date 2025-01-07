@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Component.h"
-
+namespace ECS
+{
 class Lifespan : public Component
 {
     private:
@@ -9,3 +10,4 @@ class Lifespan : public Component
         size_t age;
 
 };
+}

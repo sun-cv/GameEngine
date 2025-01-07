@@ -11,16 +11,16 @@ namespace Toolkit
 TestECSComponents::TestECSComponents() : translationA(0, 0, 0), translationB(0, 0, 0)
 {
 
-    meshManager     = std::make_shared<MeshManager>();
-    shaderManager   = std::make_shared<ShaderManager>();
-    textureManager  = std::make_shared<TextureManager>();
-    materialManager = std::make_shared<MaterialManager>(shaderManager, textureManager);
+    // meshManager     = std::make_shared<MeshManager>();
+    // shaderManager   = std::make_shared<ShaderManager>();
+    // textureManager  = std::make_shared<TextureManager>();
+    // materialManager = std::make_shared<MaterialManager>(shaderManager, textureManager);
 
-    entityManager   = std::make_shared<ECS::EntityManager>();
-    builder         = std::make_shared<ECS::EntityBuilder>(entityManager, meshManager, materialManager);
+    // entityManager   = std::make_shared<ECS::EntityManager>();
+    // builder         = std::make_shared<ECS::EntityBuilder>(entityManager, meshManager, materialManager);
 
-    projection      = glm::ortho(0.0f, 1280.0f, 0.0f, 720.0f, -1.0f, 1.0f);
-    view            = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
+    // projection      = glm::ortho(0.0f, 1280.0f, 0.0f, 720.0f, -1.0f, 1.0f);
+    // view            = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
 
     generateEntity();
 }
@@ -34,23 +34,23 @@ TestECSComponents::~TestECSComponents()
 void TestECSComponents::generateEntity()
 {
     
-    entity = builder->create("test")
-        .player(true)
-        .lifespan(100)
-        .position({0,0})
-        .velocity({0.1f,0.1f})
-        .render("large_default", "instance_default")
-        .complete();
+    // entity = builder->create("test")
+    //     .player(true)
+    //     .lifespan(100)
+    //     .position({0,0})
+    //     .velocity({0.1f,0.1f})
+    //     .render("large_default", "instance_default")
+    //     .complete();
 
-        auto& render = entity->get<Render>();
-        std::shared_ptr<Mesh> mesh = meshManager->getMesh(render.material);
-        auto& vertices = mesh->getVertices();
+        // auto& render = entity->get<Render>();
+        // std::shared_ptr<Mesh> mesh = meshManager->getMesh(render.material);
+        // auto& vertices = mesh->getVertices();
 
     std::vector<glm::mat4> instanceTransforms(2);
     instanceTransforms[0] = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
     instanceTransforms[1] = glm::translate(glm::mat4(1.0f), glm::vec3(100.0f, 100.0f, 0.0f));
    
-   mesh->instanceBuffer(instanceTransforms);
+//    mesh->instanceBuffer(instanceTransforms);
 }
 
 void TestECSComponents::onUpdate(float deltaTime)

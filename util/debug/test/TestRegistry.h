@@ -7,3 +7,4 @@
 #include "test/TestMeshMaterial.h"
 #include "test/TestECSComponents.h"
 #include "test/TestInstancedRender.h"
+#include "test/TestInstancedRenderBatch.h"

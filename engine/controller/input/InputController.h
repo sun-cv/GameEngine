@@ -4,13 +4,15 @@
 #include "WindowController.h"
 #include "ForwardEvent.h"
 
+// REWORK REQUIRED
 
 class InputController
-{
-    private:
-
+{   // Variables
+    private: // Dependencies
         std::shared_ptr<WindowController>       windowController;
 
+    // Functions
+    private:
         void registerListeners                  ();
         void registerCallbacks                  ();
         void createInputEvents                  (Event& event);
@@ -32,8 +34,6 @@ class InputController
         void handleMouseClick                   (MouseEvent& event);
         void handleMouseScroll                  (MouseScrolledEvent& event);
         void handleMouseMoved                   (MouseMovedEvent& event);
-
-
 
     public:
         InputController                          (std::shared_ptr<WindowController> windowController);

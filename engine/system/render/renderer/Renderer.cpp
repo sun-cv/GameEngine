@@ -12,13 +12,13 @@ void Renderer::draw(std::shared_ptr<Material> material, std::shared_ptr<Mesh> me
 
 }
 
-void Renderer::drawInstance(std::shared_ptr<Material> material, std::shared_ptr<Mesh> mesh, unsigned int instanceCount) const
+void Renderer::drawInstance( std::shared_ptr<Mesh> mesh, std::shared_ptr<Material> material, ECS::Entity instanceCount) const
 {
 
     material->bind();
     mesh->bind();
 
-    glDrawElementsInstanced(GL_TRIANGLES, mesh->VAO->getIndexCount(), GL_UNSIGNED_INT, nullptr, instanceCount);
+    glDrawElementsInstanced(GL_TRIANGLES, mesh->VAO->getIndexCount(), GL_UNSIGNED_INT, nullptr, static_cast<unsigned int>(instanceCount));
 
     material->unbind();
     mesh->unbind();

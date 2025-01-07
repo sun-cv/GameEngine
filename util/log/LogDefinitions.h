@@ -47,6 +47,7 @@ enum LogCategory {
     EMP, 
     mEntity,
     bEntity,
+    mComponent,
 
     Count,
 };
@@ -74,7 +75,8 @@ static const char* categoryStrings[] =
     "Texture",
     "EntityMemoryPool",
     "EntityManager",
-    "EntityBuilder"
+    "EntityBuilder",
+    "ComponentManager",
 
     "Count"
 };

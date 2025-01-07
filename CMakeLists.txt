@@ -19,8 +19,10 @@ set(INCLUDE_DIRECTORIES
     ${CMAKE_SOURCE_DIR}/engine/core
     ${CMAKE_SOURCE_DIR}/engine/ecs
     ${CMAKE_SOURCE_DIR}/engine/ecs/component
+    ${CMAKE_SOURCE_DIR}/engine/ecs/component/templates
     ${CMAKE_SOURCE_DIR}/engine/ecs/entity
-    ${CMAKE_SOURCE_DIR}/engine/ecs/entity/factory
+    ${CMAKE_SOURCE_DIR}/engine/ecs/entity/builder
+    ${CMAKE_SOURCE_DIR}/engine/ecs/memory
     ${CMAKE_SOURCE_DIR}/engine/include
     ${CMAKE_SOURCE_DIR}/engine/include/forward
     ${CMAKE_SOURCE_DIR}/engine/system

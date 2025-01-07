@@ -15,7 +15,7 @@ namespace nlohmann {
         {
             if (!j.is_array() || j.size() != 3) 
             {
-                Log_(Log::Error, Log::mFile, "Expected a 3-element array for glm::vec3");
+                Log(Log::Error, Log::mFile, "Expected a 3-element array for glm::vec3");
             }
             vec = glm::vec3
             (
@@ -38,7 +38,7 @@ namespace nlohmann {
         {
             if (!j.is_array() || j.size() != 4) 
             {
-                Log_(Log::Error, Log::mFile, "Expected a 4-element array for glm::vec4");
+                Log(Log::Error, Log::mFile, "Expected a 4-element array for glm::vec4");
             }
             vec = glm::vec4
             (
@@ -62,14 +62,14 @@ namespace nlohmann {
         {
             if (!j.is_array() || j.size() != 4) 
             {
-                Log_(Log::Error, Log::mFile, "Expected a 4x4 array for glm::mat4");
+                Log(Log::Error, Log::mFile, "Expected a 4x4 array for glm::mat4");
             }
 
             for (int i = 0; i < 4; ++i) 
             {
                 if (!j[i].is_array() || j[i].size() != 4) 
                 {
-                    Log_(Log::Error, Log::mFile, "Expected a 4-element array for each row of glm::mat4");
+                    Log(Log::Error, Log::mFile, "Expected a 4-element array for each row of glm::mat4");
                 }
                 for (int j_col = 0; j_col < 4; ++j_col) 
                 {

@@ -41,7 +41,7 @@ class Shader
         template <typename type>
         void setUniform(const std::string& name, const type& value)
         {
-            Log_(Log::Warning, Log::Shader, "Uniform type {} not supported", name);
+            Log(Log::Warning, Log::Shader, "Uniform type {} not supported", name);
         }
         
         template <>
@@ -56,13 +56,13 @@ class Shader
             glUniform1f(getUniformLocation(name), value);
         }
 
-                template <>
+        template <>
         void setUniform(const std::string& name, const glm::vec3& value)
         {
             glUniform3fv(getUniformLocation(name), 1, glm::value_ptr(value));
         }
 
-                template <>
+        template <>
         void setUniform(const std::string& name, const glm::mat4& value)
         {
             glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, &value[0][0]);

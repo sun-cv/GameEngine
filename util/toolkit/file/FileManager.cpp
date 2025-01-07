@@ -22,7 +22,7 @@ std::vector<std::string> FileManager::getFiles(const std::string& directory, con
     } 
     catch (const std::filesystem::filesystem_error& error) 
     {
-        Throw_(Error::runtime, "Failed traversing directory: {} | Exception:\n {}", directory, error.what())
+        Throw(Error::runtime, "Failed traversing directory: {} | Exception:\n {}", directory, error.what())
     }
 
 }
@@ -32,7 +32,7 @@ nlohmann::json FileManager::loadJson(const std::string& filepath)
     std::ifstream file(filepath);
     if (!file.is_open()) 
     {
-        Throw_(Error::runtime, "Failed to open file: {}", filepath)
+        Throw(Error::runtime, "Failed to open file: {}", filepath)
         return {};
     }
 

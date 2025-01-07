@@ -102,7 +102,13 @@ class Logger {
 };
 }
 
-#define Log_(level, category, format, ...)      Log::Logger::getInstance().log(level, category, format, __VA_ARGS__);
-#define Log__(format)                           Log::Logger::getInstance().quicklog(format);
-#define LogLevel(level)                         Log::Logger::getInstance().setLogLevel(level);
-#define LogCategories(...)                      Log::Logger::getInstance().addCategories(__VA_ARGS__)
+#define Log(level, category, format, ...)   Log::Logger::getInstance().log(level, category, format, __VA_ARGS__);
+#define Log_(format)                        Log::Logger::getInstance().quicklog(format);
+#define LogLevel(level)                     Log::Logger::getInstance().setLogLevel(level);
+#define LogCategories(...)                  Log::Logger::getInstance().addCategories(__VA_ARGS__)
+#define LogStartup(category)                Log::Logger::getInstance().log(Log::System, category, "Initializing.." );
+#define LogSuccess(category)                Log::Logger::getInstance().log(Log::System, category, "Initialized successfully" );
+#define LogFailure(category, error)         Log::Logger::getInstance().log(Log::System, category, "Failed initialization: {}", (error).what());
+#define LogPowerDown(category)              Log::Logger::getInstance().log(Log::System, category, "Powering down..");
+#define LogStartupSequence()                Log::Logger::getInstance().log(Log::System, Log::Engine, "Initiating startup sequence..");
+#define LogSystemsOnline()                  Log::Logger::getInstance().log(Log::System, Log::Engine, "All systems online. Engage!");

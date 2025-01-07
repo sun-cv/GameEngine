@@ -1,39 +1,38 @@
 #pragma once
 
 #include "CoreUtility.h"
-#include "Entity.h"
+#include "ECSValue.h"
 
-#include "MeshManager.h"
-#include "MaterialManager.h"
+#include "EntityMemoryPool.h"
 
 
 namespace ECS
 {
 class EntityManager 
-{
+{   // Variables  
     private:
-        std::vector<Entity>                     entities;
-        std::vector<Entity>                     createQueue;
-        std::vector<Entity>                     destroyQueue;
+            // Memory allocation
+        std::shared_ptr<EntityMemoryPool>       entityMemoryPool;
+        
+    public: // NA
 
-        std::shared_ptr<MeshManager>            meshManager;
-        std::shared_ptr<MaterialManager>        materialManager;
+    //Functions
+    private:// NA
+    public:
+            // Entity Management
+        Entity  createEntity  ();
+        bool    validate(Entity entityID);
+        void    destroy (Entity entityID);
+        void    tag     (Entity entityID, std::string tag);
 
-    private:
-        void createEntities ();
-        void destroyEntities();
+            // External access
+        const std::vector<Entity> getEntities();
+        const std::vector<Entity> getDirtyEntities();
+        const std::vector<Entity>& getTag();
+
 
     public:
-        EntityManager();                         
+        EntityManager(std::shared_ptr<EntityMemoryPool> EntityMemoryPool);                         
        ~EntityManager();
-
-        void   update();
-
-        Entity createEntity         (const std::string& tag);
-        void destroyEntity          (Entity entity);
-
-        std::vector<Entity> getEntities();
 };
 }
-
-#define CreateEntity(tag) ECS::EntityManager::createEntity(tag);

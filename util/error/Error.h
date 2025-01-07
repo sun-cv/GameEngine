@@ -74,6 +74,6 @@ class ErrorHandler
 };
 }
 
-#define Throw_(level, format, ...) Error::ErrorHandler::getInstance().Throw(level, format, __VA_ARGS__);
+#define Throw(level, format, ...) Error::ErrorHandler::getInstance().Throw(level, format, __VA_ARGS__);
 #define Exceptions const std::exception& error
 

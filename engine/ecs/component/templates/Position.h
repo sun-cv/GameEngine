@@ -2,11 +2,14 @@
 
 #include "Component.h"
 #include "Vector2.h"
-
-class Velocity : public Component
+namespace ECS
+{
+class Position : public Component
 {
     private:
     public:
         float x;
         float y;
+
 };
+}

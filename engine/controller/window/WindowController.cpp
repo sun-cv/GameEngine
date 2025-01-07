@@ -6,62 +6,69 @@
 
 WindowController::WindowController()
 {
-    Log_(Log::System, Log::cWindow, "Initializing..")
-    registerListeners();
-    initialize();
-    Log_(Log::System, Log::cWindow, "Initialized successfully!")
-
+    LogStartup(Log::cWindow);
+    try
+    {
+        registerListeners();
+        initialize();
+    }
+    catch(Exceptions)
+    {
+        LogFailure(Log::cWindow, error);
+    }
+    LogSuccess(Log::cWindow);
 };
+
 WindowController::~WindowController()
 {
+
 };
+
 
 void WindowController::registerListeners()
 {
-    using namespace std::placeholders;
-    Listener_(EventType::CloseWindow, std::bind(&WindowController::closeWindow, this, _1))
+    Listener_(EventType::CloseWindow, std::bind(&WindowController::closeWindow, this, std::placeholders::_1));
 }
+
 
 void GLAPIENTRY debugCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
 {
-    Log_(Log::Error, Log::OpenGL, "::[{}] Debug message: {}", severity, message);
+    Throw(Error::runtime, "::[{}] OpenGL debug message: {}", severity, message);
 }
+
 
 void setupDebugCallback()
 {
     glEnable(GL_DEBUG_OUTPUT);
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 
-    glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, nullptr, GL_FALSE);
+    glDebugMessageControl (GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, nullptr, GL_FALSE);
 
-    glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_HIGH, 0, nullptr, GL_TRUE);
-    glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_MEDIUM, 0, nullptr, GL_TRUE);
-    glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_LOW, 0, nullptr, GL_TRUE);
+    glDebugMessageControl (GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_HIGH,   0, nullptr, GL_TRUE);
+    glDebugMessageControl (GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_MEDIUM, 0, nullptr, GL_TRUE);
+    glDebugMessageControl (GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_LOW,    0, nullptr, GL_TRUE);
     glDebugMessageCallback(debugCallback, nullptr);
 }
 
+
 void WindowController::framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-
     WindowController* controller = static_cast<WindowController*>(glfwGetWindowUserPointer(window));
-    if (controller)
-    {
-        glViewport(0, 0, width, height);
-    }
+    
+    if (!controller) return;
+
+    glViewport(0, 0, width, height);
 }
 
 
 void WindowController::window_size_callback(GLFWwindow* window, int width, int height)
 {
     WindowController* controller = static_cast<WindowController*>(glfwGetWindowUserPointer(window));
-    if (controller)
-    {
-        controller->width                       = width;
-        controller->height                      = height;
-
-        Log__(width);
-        Log__(height);
-    }
+    
+    if (!controller) return;
+    
+    controller->width                       = width;
+    controller->height                      = height;
 }
 
 
@@ -71,13 +78,11 @@ void WindowController::window_refresh_callback(GLFWwindow* window)
 }
 
 
-
 void WindowController::initialize()
 {
     if(!glfwInit())
     {
-        Log_(Log::Fatal, Log::cWindow, "Failed to initialize GLFW");
-        return;
+        Throw(Error::runtime, "Failed to initialize GLFW");
     }
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -90,8 +95,7 @@ void WindowController::initialize()
 
     if (!window)
     {
-        Log_(Log::Fatal, Log::cWindow, "Failed to initialize window");
-        return;
+        Throw(Error::runtime, "Failed to initialize window")
     }
 
     glfwMakeContextCurrent(window);
@@ -104,19 +108,15 @@ void WindowController::initialize()
 
     glfwSetWindowRefreshCallback(window, window_refresh_callback);
 
-
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
-        Log_(Log::Fatal, Log::Engine, "Failed to initialize GLAD");
-        return;
+        Throw(Error::runtime, "Failed to initialize GLAD")
     }
 
     glViewport(0, 0, width, height);
 
     setupDebugCallback();
 }
-
-
 
 
 bool WindowController::active()
@@ -129,7 +129,6 @@ void WindowController::pollEvents()
 {
     glfwSetWindowSizeCallback(window, window_size_callback);
     glfwPollEvents();
-
 }
 
 
@@ -152,15 +151,17 @@ void WindowController::swapBuffers()
     glfwSwapBuffers(window);
 }
 
+
 void WindowController::closeWindow(Event& event)
 {
     glfwSetWindowShouldClose(window, GLFW_TRUE);
 }
 
+
 void WindowController::shutdown()
 {
     glfwDestroyWindow(window);
     glfwTerminate();
-    Log_(Log::System, Log::cWindow, "Powering down..")
+    LogPowerDown(Log::cWindow);
 }
 

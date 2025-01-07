@@ -8,9 +8,7 @@
 #include "IndexBuffer.h"
 
 
-#include "Component.h"
-
-class Mesh : public Component
+class Mesh
 {
     private:
         std::vector<float>                      vertices;

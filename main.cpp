@@ -5,13 +5,13 @@
 int main()
 {
 
-    Log_(Log::System, Log::Engine, "Initiating startup sequence..");
+    Log(Log::System, Log::Engine, "Initiating startup sequence..");
 
     {
         Engine engine;
     }
     
-    Log_(Log::System, Log::Engine, "Safe shutdown sequence complete!");
+    Log(Log::System, Log::Engine, "Safe shutdown sequence complete!");
 
     return 1;
 };

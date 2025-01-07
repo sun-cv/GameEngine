@@ -91,7 +91,7 @@ class EventDispatcher
         {
             listeners[type].push_back(callback);
             auto eventTypeIndex = static_cast<size_t>(type); 
-            Log_(Log::Debug, Log::EventDispatcher, "Registering listener {}", eventStrings[eventTypeIndex] );
+            Log(Log::Debug, Log::EventDispatcher, "Registering listener {}", eventStrings[eventTypeIndex] );
         }
 
         void dispatch(Event& event)

@@ -11,7 +11,6 @@
 #include "MeshManager.h"
 #include "MaterialManager.h"
 
-#include "Entity.h"
 #include "EntityManager.h"
 #include "EntityBuilder.h"
 

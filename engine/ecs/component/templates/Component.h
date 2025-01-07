@@ -1,9 +1,12 @@
 #pragma once
 
+namespace ECS
+{
 class Component
 {
     private:
     public:
         Component()                             = default;        
-        bool exists                             = false;
+        bool active                             = false;
 };
+}

@@ -9,7 +9,8 @@
 
 namespace ECS
 {
-    using size = size_t;
+    using Entity = size_t;
+    using Vector = Vector2;
 
     typedef std::tuple<
         std::vector<Enemy>,
@@ -20,5 +21,5 @@ namespace ECS
         std::vector<Title>,
         std::vector<Transform>,
         std::vector<Velocity>
-    > VectorTuple;
+    > ComponentTuple;
 }

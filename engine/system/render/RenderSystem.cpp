@@ -1,73 +1,113 @@
 #include "RenderSystem.h"
 
 
-
-
-RenderSystem::RenderSystem(std::shared_ptr<Renderer> renderer, std::shared_ptr<ECS::EntityManager> entityManager, std::shared_ptr<MeshManager> meshManager, std::shared_ptr<MaterialManager> materialManager) : renderer(renderer), entityManager(entityManager), meshManager(meshManager), materialManager(materialManager)
+RenderSystem::RenderSystem(std::shared_ptr<Renderer> renderer, std::shared_ptr<ECS::EntityManager> entityManager, std::shared_ptr<ECS::ComponentManager> componentManager, std::shared_ptr<MeshManager> meshManager, std::shared_ptr<MaterialManager> materialManager) : renderer(renderer), entityManager(entityManager), componentManager(componentManager), meshManager(meshManager), materialManager(materialManager)
 {
-    Log_(Log::System, Log::sRender, "Initializing..")
-    
-    Log_(Log::System, Log::sRender, "Initialized successfully!")
+    LogSuccess(Log::sRender);
 }
 
-void RenderSystem::update()
+RenderSystem::~RenderSystem()
 {
-    sortEntities();
+    LogPowerDown(Log::sRender);
 }
-
-
-void RenderSystem::sortEntities()
-{
-    layerSort();
-    instanceSort();
-}
-
-void RenderSystem::layerSort() {
-    for (auto& entity : entityManager->getEntities())
-    {
-        if (entity.has<Render>())
-        {
-            auto& render    = entity.get<Render>();
-            auto& transform = entity.get<Transform>();
-
-            RenderGroup group;
-            group.mesh      = meshManager->getMesh(render.mesh);
-            group.material  = materialManager->getMaterial(render.material);
-            group.transform = &transform;
-
-            layerSortedEntities[render.layer].push_back(group);
-        }
-    }
-}
-
-
-void RenderSystem::instanceSort()
-{
-    for ( auto& group : layerSortedEntities)
-    {
-        auto& layer         = group.first;
-        auto& renderGroup   = group.second;
-
-        for (size_t i = 0; i < renderGroup.size(); i++)
-        {
-            auto& mesh      = renderGroup[i].mesh;
-            auto& material  = renderGroup[i].material;
-            auto* transform = renderGroup[i].transform;
-
-            instanceLayerSortedEntities[layer][{mesh, material}].push_back(transform);
-        }
-    }
-}
-
-
-
 
 void RenderSystem::setViewProjection()
 {
 }
 
+void RenderSystem::update()
+{   
+    try
+    {
+        sortEntities();
+    }
+    catch(Exceptions)
+    {
+        Log(Log::Error, Log::sRender, "Update failed: {}", error.what());
+    }
+    
+}
+
+
+void RenderSystem::sortEntities()
+{
+    for (auto& entityID : entityManager->getDirtyEntities())
+    {
+        auto& render = componentManager->edit<ECS::Render>(entityID);
+
+        if (!render.flag.fresh && !render.flag.depth) continue;
+
+        if (render.flag.depth)
+        {
+            auto& filter   = sortMap[entityID];
+            auto& vector   = instanceSortedEntities[filter.layer][{filter.mesh, filter.material}];
+            auto iterator  = std::find(vector.begin(), vector.end(), entityID);
+
+            if (iterator == vector.end())
+            {
+                Throw(Error::runtime, "Entity instanced map deletion failed | Desync possible");
+            }
+            vector.erase(iterator);
+        }
+
+        instanceSortedEntities[render.layer][{render.mesh, render.material}].push_back(entityID);
+
+        render.flag.depth = false;
+        render.flag.fresh = false;
+        sortMap[entityID] = {render.mesh, render.material, render.layer};
+    }
+}
+
+
+void RenderSystem::instancedRenderPass()
+{
+    try
+    {
+        for (auto& layer : instanceSortedEntities)
+        {
+            for (auto& instanceMap : layer.second )
+            {
+                std::vector<glm::mat4> instanceBuffer;
+
+                auto& IDPair     = instanceMap.first;
+                auto& entities   = instanceMap.second;
+
+                auto& meshID     = IDPair.first;
+                auto& materialID = IDPair.second;
+
+                auto mesh        = meshManager->getMesh(meshID);
+                auto material    = materialManager->getMaterial(materialID);
+
+                for (auto& entityID : entities)
+                {
+                    auto& transform = componentManager->get<ECS::Transform>(entityID).modelMatrix;
+                    instanceBuffer.push_back(transform);
+
+                }
+
+                mesh->instanceBuffer(instanceBuffer);
+
+                material->setUniform("projection", projectionMatrix);
+                material->setUniform("view", viewMatrix);
+                renderer->drawInstance(mesh, material, instanceBuffer.size());
+            }
+        }
+    }
+    catch(Exceptions)
+    {
+        Throw(Error::runtime, "Failed RenderPass : {}", error.what())
+    }
+    
+}
+
+
+
+void RenderSystem::clear()
+{
+    renderer->clear(clearScreen);
+}
 
 void RenderSystem::render()
 {
-    renderer->clear(clearScreen);  
+    instancedRenderPass();
 }

@@ -21,7 +21,7 @@ Texture::Texture(const std::string& name, const std::string & path) : rendererID
     
     if (!data) 
     {
-        Throw_(Error::runtime, "Creating texture {} failed (Missing data)", name)
+        Throw(Error::runtime, "Creating texture {} failed (Missing data)", name)
     }
     
     GLenum format = (BPP == 4) ? GL_RGBA : GL_RGB;
@@ -39,7 +39,7 @@ Texture::~Texture()
 
 void Texture::bind(unsigned int slot) const
 {
-    Log_(Log::Loop, Log::Texture, "Binding texture {} to slot {}", rendererID, slot);
+    Log(Log::Loop, Log::Texture, "Binding texture {} to slot {}", rendererID, slot);
 
     glActiveTexture(GL_TEXTURE0 + slot);
     glBindTexture(GL_TEXTURE_2D, rendererID);
@@ -59,12 +59,12 @@ bool Texture::reload()
 
         *this = buffer;
 
-        Log_(Log::System, Log::Texture, "Reloaded Texture {} successfully", name);
+        Log(Log::System, Log::Texture, "Reloaded Texture {} successfully", name);
         return true;
     }
     catch(Exceptions)
     {
-        Log_(Log::Error, Log::Texture, "Reload failed | {}", error.what());
+        Log(Log::Error, Log::Texture, "Reload failed | {}", error.what());
         throw;
     }
 }

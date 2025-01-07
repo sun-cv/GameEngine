@@ -3,8 +3,8 @@
 #include "Core.h"
 
 class Engine
-{
-    private:
+{   // Variables
+    private: // Dependencies
         std::shared_ptr<WindowController>       windowController;
         std::shared_ptr<InputController>        inputController;
 
@@ -13,19 +13,20 @@ class Engine
         std::shared_ptr<MaterialManager>        materialManager;
         std::shared_ptr<MeshManager>            meshManager;
 
+        std::shared_ptr<ECS::EntityMemoryPool>  entityMemoryPool;
         std::shared_ptr<ECS::EntityManager>     entityManager;
         std::shared_ptr<ECS::EntityBuilder>     builder;
+
+        std::shared_ptr<ECS::ComponentManager>  componentManager;
 
         std::shared_ptr<Renderer>               renderer;
         std::shared_ptr<RenderSystem>           renderSystem;
 
         std::shared_ptr<Toolkit::Testbench>     testbench;
-    public:
-        Engine();
-        ~Engine();
 
+    //Functions
+    private:
         void construct();
-        void log();
         void engage();
 
         void run();
@@ -37,4 +38,29 @@ class Engine
         void display();
 
         void shutdown();
+    
+    public:
+        Engine();
+       ~Engine();
 };
+
+
+/*
+*********************************************************************************************************
+*                                            REWORK REQUIRED                                            *
+*********************************************************************************************************
+
+    0. All of it at some point.
+
+    1. Render system
+        (1/2) sRender holds transform instead of entityID?
+        (2/2) filtered entity vectors for active and dirty passed as copies currently.
+    2. cInput
+    3. eBuilder
+        (1/2) new structure rework                                                          - In progress
+        (2/2) Transform component initialization?
+    4. Double check rework of .h and log/Error macro - Specifically notating // Throw       - In progress
+    
+
+
+*/
